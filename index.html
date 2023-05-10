@@ -5,6 +5,24 @@
     <link rel="stylesheet" href="index.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <!-- Normalize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <!-- Cropper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"
+    />
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
     <script src="script.js" defer></script>
     <title>Annotation Tool</title>
 </head>
@@ -12,52 +30,38 @@
 <body>
     <br />
     <div class="container">
-        <!-- input file -->
-        <div class="box">
-            <input type="file" id="file-input" webkitdirectory multiple />
+      <!-- input file -->
+      <div class="box">
+        <input type="file" id="file-input" webkitdirectory multiple />
+      </div>
+      <!-- left image -->
+      <div class="box-2">
+        <div class="result"></div>
+      </div>
+      <!--cropped image-->
+      <div class="box-2 img-result hide">
+        <!-- result of crop -->
+        <img class="cropped" src="" alt="" />
+      </div>
+      <div class="buttons">
+        <button class="btn" id="next-btn">Next</button>
+        <button class="btn" id="prev-btn">Previous</button>
+      </div>
+      <!-- input file -->
+      <div class="box">
+        <div class="options hide">
+          <label> Width</label>
+          <input type="number" class="img-w" value="300" min="100" max="1200" />
         </div>
-        <!-- left image -->
-        <div class="box-2">
-            <div class="result"></div>
-        </div>
-        <!--cropped image-->
-        <div class="box-2 img-result hide">
-            <!-- result of crop -->
-            <img class="cropped" src="" alt="" />
-        </div>
-        <div class="buttons">
-            <button class="btn" id="next-btn">Next</button>
-            <button class="btn" id="prev-btn">Previous</button>
-        </div>
-        <!-- input file -->
-        <div class="box">
-            <div class="options hide">
-                <label> Width</label>
-                <input type="number" class="img-w" value="300" min="100" max="1200" />
-            </div>
-            <!-- save btn -->
-            <button class="btn save hide">Save</button>
-            <!-- download btn -->
-            <a href="" class="btn download hide">Download</a>
-        </div>
-        <div id="imageViewer">
-            <div>
-                <img id="image" src="" />
-                <span id="imageCaption"></span>
-            </div>
-            <div class="buttons">
-                <button id="prevButton">Prev</button>
-                <button id="nextButton">Next</button>
-                <button id="deleteButton">Delete</button>
-                <div class="lang-toggle">
-                    <span class="lang-title">Eng</span>
-                    <label class="switch">
-                        <input type="checkbox" id="toggleNepaliSwitch" />
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="lang-title">Nep</span>
-                </div>
-            </div>
+        <!-- save btn -->
+        <button class="btn save hide">Save</button>
+        <!-- download btn -->
+        <a href="" class="btn download hide">Download</a>
+      </div>
+      <div id="imageViewer">
+        <div>
+          <img id="image" src="" />
+          <span id="imageCaption"></span>
         </div>
         <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
         <div id="suggestions"></div>
