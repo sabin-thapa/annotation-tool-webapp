@@ -1,17 +1,22 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 10px;
     padding-left: 32%;
     padding-top: 10%;
     padding-right: 26%;
     background-image: url(https://img.freepik.com/free-vector/white-abstract-background-design_23-2148825582.jpg?w=2000&t=st=1683095940~exp=1683096540~hmac=b8db45767a0b5a184217915aaec970b1c3165699bfb8ecee37e46eee35cf8bd2);
+    border: 3px solid;
+    border-color: #4e4f4e;
+    border-width: 8px;
+
 }
 
 .container {
-    border: 3px solid;
-    border-color: #4e4f4e;
-    border-radius: 3px;
-    border-width: 10px;
-
+    border: 10px outset grey;
+    outline-offset: rgba(86, 85, 85, 0.504);
+    border-radius: 12px;
+    margin: 2rem;
+    padding: 1rem;
 }
 
 form {
@@ -19,15 +24,17 @@ form {
 }
 
 textarea {
-    width: 100%;
+    width: 50%;
     height: 200px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     font-size: 16px;
-    resize: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
+
+
 
 textarea:focus {
     outline: none;
@@ -42,6 +49,7 @@ button {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    padding: 15px;
 }
 
 button:hover {
