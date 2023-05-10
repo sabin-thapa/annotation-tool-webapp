@@ -29,7 +29,7 @@
     <main class="page">
       <!-- input file -->
       <div class="box">
-        <input type="file" id="file-input" />
+        <input type="file" id="file-input" webkitdirectory multiple/>
       </div>
       <!-- left image -->
       <div class="box-2">
@@ -39,6 +39,10 @@
       <div class="box-2 img-result hide">
         <!-- result of crop -->
         <img class="cropped" src="" alt="" />
+      </div>
+      <div class="buttons">
+        <button class="btn" id="next-btn">Next</button>
+        <button class="btn" id="prev-btn">Previous</button>
       </div>
       <!-- input file -->
       <div class="box">
