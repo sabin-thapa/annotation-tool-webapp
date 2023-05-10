@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="index.css">
+    <script src="dnm-croppr.js"></script>
+    <link rel="stylesheet" href="dnm-croppr.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <title>Annotation Tool</title>
+
+</head>
+
+<body>
+    <br>
+    <div class="container">
+        <button id="selectFolderButton">Select folder</button>
+        <div id="imageViewer">
+            <div>
+                <img id="image" src="">
+                <span id="imageCaption"></span>
+            </div>
+            <div class="buttons">
+
+                <button id="prevButton">Prev</button>
+                <button id="nextButton">Next</button>
+                <button id="deleteButton">Delete</button>
+                <div class="lang-toggle">
+                    <span class="lang-title">Eng</span>
+                    <label class="switch">
+                        <input type="checkbox" id="toggleNepaliSwitch">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="lang-title">Nep</span>
+                </div>
+            </div>
+        </div>
+        <textarea id="transliterateTextarea" style="width:600px;height:200px"></textarea>
+        <div id="suggestions"></div>
+        <div class="current-index"></div>
+        <p>Note : Press SpaceBar after typing one word for English to Nepali Translation. <br>If translation
+            is wrong click the word to select from list of Suggestions.</p>
+        <button id="saveButton">Save</button>
+        <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="index.js"> </script>
+    </div>
+</body>
+
+</html>
