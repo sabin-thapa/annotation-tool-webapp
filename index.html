@@ -53,15 +53,19 @@
           <label> Width</label>
           <input type="number" class="img-w" value="300" min="100" max="1200" />
         </div>
-        <!-- save btn -->
-        <button class="btn save hide">Save</button>
-        <!-- download btn -->
-        <a href="" class="btn download hide">Download</a>
       </div>
       <div id="imageViewer">
         <div>
           <img id="image" src="" />
           <span id="imageCaption"></span>
+        </div>
+        <div class="lang-toggle">
+          <span class="lang-title">Eng</span>
+          <label class="switch">
+            <input type="checkbox" id="toggleNepaliSwitch">
+            <span class="slider round"></span>
+          </label>
+          <span class="lang-title">Nep</span>
         </div>
         <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
         <div id="suggestions"></div>
@@ -71,7 +75,7 @@
             Translation. <br />If translation is wrong click the word to select from
             list of Suggestions.
         </p>
-        <button id="saveButton">Save</button>
+        <button id="saveButton" class="btn save">Save</button>
         <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="index.js"></script>
