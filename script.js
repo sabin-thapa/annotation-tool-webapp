@@ -15,6 +15,8 @@ const suggestionsElement = document.querySelector("#suggestions"); //suggestionD
 const inputTextField = document.querySelector("#transliterateTextarea"); //inputField
 
 let cropper = "";
+let croppedImageLink = "";
+let croppedCanvas = ""
 
 //List of files in the folder
 let fileList = [];
@@ -76,8 +78,8 @@ saveBtn.addEventListener("click", (e) => {
   const croppedCanvas = cropper.getCroppedCanvas();
 
   // Save cropped image
-  const croppedImageName = `cropped_${currentIndex}.png`;
-  const croppedImageLink = croppedCanvas.toDataURL("image/png");
+  croppedImageName = `cropped_${currentIndex}.png`;
+  croppedImageLink = croppedCanvas.toDataURL("image/png");
 
   fetch(saveCroppedEndpoint, {
     method: "POST",
@@ -126,6 +128,11 @@ saveBtn.addEventListener("click", (e) => {
     .catch((err) => {
       console.error("Error saving cropped image: ", err);
     });
+
+    // SAVE TO CSV
+    saveToCSV()
+
+
   console.log("saved");
 });
 
@@ -227,4 +234,31 @@ function selectSuggestedWord(text, index) {
   suggestionsElement.innerHTML = "";
   inputTextField.focus();
   inputTextField.setSelectionRange(index, index)
+}
+
+// Need to save image name, annotated text and isNepali to a csv file
+
+function saveToCSV() {
+  //data
+  const imageName = croppedImageName;
+  const annotatedText = inputTextField.value;
+  const isNepali = nepaliMode;
+
+  //Create CSV content - Headers and Data
+  const csvContent = `data:text/csv;charset=utf-8,Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
+ 
+  //Link element to download the CSV file
+  const link = document.createElement("a");
+  link.href = encodeURI(csvContent);
+  link.target = "_blank";
+  link.download = "annotated_data.csv";
+
+  //Appending the link element to the document body
+  document.body.appendChild(link);
+
+  //Trigger download
+  link.click();
+
+  console.log('Saved data to CSV!');
+
 }
