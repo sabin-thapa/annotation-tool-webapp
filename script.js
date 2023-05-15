@@ -16,18 +16,19 @@ const inputTextField = document.querySelector("#transliterateTextarea"); //input
 
 let cropper = "";
 let croppedImageLink = "";
-let croppedCanvas = ""
+let croppedImageName = "";
 
 //List of files in the folder
 let fileList = [];
 let currentIndex = 0;
 
-let suggestions = []
-let suggestedWord = ""
+let suggestions = [];
+let suggestedWord = "";
 let nepaliMode = false;
 
 const saveCroppedEndpoint = `http://localhost:3000/save-cropped`;
 const saveOriginalEndpoint = `http://localhost:3000/save-original`;
+const saveCSVEndpoint = `http://localhost:3000/save-csv`;
 
 // After an image has been selected
 fileInput.addEventListener("change", (e) => {
@@ -72,7 +73,7 @@ function showImage(index) {
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // const img = document.querySelector(".result img");
+  const img = document.querySelector(".result img");
 
   // Get cropped area of the image
   const croppedCanvas = cropper.getCroppedCanvas();
@@ -129,9 +130,27 @@ saveBtn.addEventListener("click", (e) => {
       console.error("Error saving cropped image: ", err);
     });
 
-    // SAVE TO CSV
-    saveToCSV()
+  // SAVE TO CSV
+  //data
+  const  imageName = `csv_${currentIndex}.csv`
+  const annotatedText = inputTextField.value;
+  const isNepali = nepaliMode;
 
+  fetch(saveCSVEndpoint, {
+    method: "POST",
+    body: JSON.stringify({
+      imageName,
+      annotatedText,
+      isNepali,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    if (res.ok) {
+      console.log("Saved successfully to CSV");
+    }
+  });
 
   console.log("saved");
 });
@@ -188,77 +207,76 @@ inputTextField.addEventListener("input", async (e) => {
       break;
     }
   }
-  console.log(wordIndex, 'wordIndex')
+  console.log(wordIndex, "wordIndex");
 
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
-
 
   const selectedWord = wordList[wordIndex];
 
   fetch(
     `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
   )
-    .then(res => res.json())
-    .then(data => {
-      suggestions = data[1][0][1]
-      suggestedWord = suggestions[0]
-      suggestionsElement.innerHTML = ""
+    .then((res) => res.json())
+    .then((data) => {
+      suggestions = data[1][0][1];
+      suggestedWord = suggestions[0];
+      suggestionsElement.innerHTML = "";
 
-      suggestions.forEach(suggestion => {
-        let suggestionBtn = document.createElement('button');
+      suggestions.forEach((suggestion) => {
+        let suggestionBtn = document.createElement("button");
         suggestionBtn.textContent = suggestion;
-        suggestionBtn.addEventListener('click', () => {
+        suggestionBtn.addEventListener("click", () => {
           wordList[wordIndex] = suggestion;
           const finalText = wordList.join(" ") + " ";
-          const selectedWordIndex = finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
-          selectSuggestedWord(finalText, selectedWordIndex)
-          suggestionsElement.innerHTML = ""
-        })
-        suggestionsElement.appendChild(suggestionBtn)
-      })
+          const selectedWordIndex =
+            finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
+          selectSuggestedWord(finalText, selectedWordIndex);
+          suggestionsElement.innerHTML = "";
+        });
+        suggestionsElement.appendChild(suggestionBtn);
+      });
 
-      if (data == " " && value[selectionIndex] - 2 !== " "){
-        console.log('Space pressed', suggestedWord)
+      if (data == " " && value[selectionIndex] - 2 !== " ") {
+        console.log("Space pressed", suggestedWord);
         wordList[wordIndex] = suggestedWord;
         const finalText = wordList.join(" ") + " ";
-        const selectedWordIndex = finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
+        const selectedWordIndex =
+          finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
         selectSuggestedWord(finalText, selectedWordIndex);
         suggestionsElement.innerHTML = "";
       }
-    })
-
+    });
 });
 
 function selectSuggestedWord(text, index) {
   inputTextField.value = text;
   suggestionsElement.innerHTML = "";
   inputTextField.focus();
-  inputTextField.setSelectionRange(index, index)
+  inputTextField.setSelectionRange(index, index);
 }
 
 // Need to save image name, annotated text and isNepali to a csv file
 
-function saveToCSV() {
-  //data
-  const imageName = croppedImageName;
-  const annotatedText = inputTextField.value;
-  const isNepali = nepaliMode;
+// function saveToCSV() {
+//   //data
+//   const imageName = croppedImageName;
+//   const annotatedText = inputTextField.value;
+//   const isNepali = nepaliMode;
 
-  //Create CSV content - Headers and Data
-  const csvContent = `data:text/csv;charset=utf-8,Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
- 
-  //Link element to download the CSV file
-  const link = document.createElement("a");
-  link.href = encodeURI(csvContent);
-  link.target = "_blank";
-  link.download = "annotated_data.csv";
+//   //Create CSV content - Headers and Data
+//   const csvContent = `data:text/csv;charset=utf-8,Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
 
-  //Appending the link element to the document body
-  document.body.appendChild(link);
+//   //Link element to download the CSV file
+//   const link = document.createElement("a");
+//   link.href = encodeURI(csvContent);
+//   link.target = "_blank";
+//   link.download = "annotated_data.csv";
 
-  //Trigger download
-  link.click();
+//   //Appending the link element to the document body
+//   document.body.appendChild(link);
 
-  console.log('Saved data to CSV!');
+//   //Trigger download
+//   link.click();
 
-}
+//   console.log("Saved data to CSV!");
+// }

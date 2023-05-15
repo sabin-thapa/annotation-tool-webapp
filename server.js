@@ -83,6 +83,35 @@ app.post("/save-original", (req, res) => {
   });
 });
 
+app.post("/save-csv", (req, res) => {
+  const {imageName, annotatedText, isNepali} = req.body;
+  console.log(imageName, 'Image Name')
+  const csvPath = path.join(__dirname, "csv", imageName);
+
+  //Create a directory if it doesn't exist
+  const directory = path.dirname(csvPath);
+  fs.mkdir(directory, {recursive: true}, (err) => {
+    if(err){
+      console.error('Error creating directory: ', err);
+      res.sendStatus(500);
+      return;
+    }
+  })
+   //Create CSV content - Headers and Data
+   const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
+ 
+  //Write content to csv file
+  fs.writeFile(csvPath, csvContent, {encoding: "utf8"}, (err) => {
+    if(err){
+      console.error('Error writing to csv file: ', err);
+      res.sendStatus(500);
+      return;
+    }
+    console.log('Data saved to CSV: ', imageName);
+    res.sendStatus(200)
+  })
+})
+
 app.listen(PORT, () => {
   console.log("Server started at port: ", PORT);
 });
