@@ -1,0 +1,181 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    padding-left: 32%;
+    padding-top: 10%;
+    padding-right: 26%;
+    background-image: url(https://img.freepik.com/free-vector/white-abstract-background-design_23-2148825582.jpg?w=2000&t=st=1683095940~exp=1683096540~hmac=b8db45767a0b5a184217915aaec970b1c3165699bfb8ecee37e46eee35cf8bd2);
+    border: 3px solid;
+    border-color: #4e4f4e;
+    border-width: 8px;
+
+}
+
+.container {
+    border: 10px outset grey;
+    outline-offset: rgba(86, 85, 85, 0.504);
+    border-radius: 12px;
+    margin: 2rem;
+    padding: 1rem;
+}
+
+form {
+    margin: 20px;
+}
+
+textarea {
+    width: 50%;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #357ae8;
+}
+
+button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #eeee;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 15px;
+}
+
+button:hover {
+    background-color: #ddd;
+    box-shadow: 0 0.5em 0.5em -0.4em #4e4f4e;
+    transform: translateY(-0.2em);
+    cursor: pointer;
+}
+
+
+#suggestions {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.suggestion {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #eee;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion:hover {
+    background-color: #ddd;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+    margin: 0 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.lang-toggle {
+    display: flex;
+    margin-left: 5px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+}
+
+figure {
+    position: relative;
+    margin: 0;
+}
+
+figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.navbar bg-body-tertiary {
+    width: 100%;
+    height: 60px;
+    color: whitesmoke;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bolder;
+    font-size: 1.3em;
+    background-image: url(https://images.unsplash.com/photo-1682213916353-279defcd3003?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80);
+}
+
+.hide {
+    display: none;
+}
