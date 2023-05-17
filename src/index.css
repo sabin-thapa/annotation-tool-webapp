@@ -35,6 +35,10 @@ body {
 
 }
 
+.box-2 {
+    width: 1000px;
+    height: 800px;
+}
 
 .result img{
     height: 100%;
@@ -103,7 +107,7 @@ button:hover {
     background-color: #269aff;
     color: white;
     box-shadow: 0 0.5em 0.5em -0.4em #4e4f4e;
-    transform: translateY(-0.2em);
+    transform: translateY(-0.05em);
     cursor: pointer;
 }
 
@@ -197,13 +201,6 @@ input:checked+.slider:before {
 
 
 }
-
-/*next and previous button*/
-.buttons {
-    display: flex;
-    align-items: center;
-}
-
 figure {
     position: relative;
     margin: 0;
@@ -294,13 +291,16 @@ figcaption {
 }
 
 #imageViewer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     font-weight: 900;
     letter-spacing: 1px;
     font-size: 23px;
-    line-height: 2.3;
     width: 1000px;
     height: 800px;
-    background-color: #13bb3a;
+    /* background-color: #13bb3a; */
+    border: 2px solid green;
 }
 
 .box {
@@ -312,11 +312,21 @@ figcaption {
     justify-content: last baseline;
 }
 
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 820px;
+    left: 400px;
+}
+
 .buttons .btn {
     background: #e3e3e3;
     color: #ffffff;
-    padding: 0.1em 1em;
-    font-size: 20px;
+    padding: 0.2em 1em;
+    font-size: 40px;
     margin: 1px;
 
 }
