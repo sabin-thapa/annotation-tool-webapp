@@ -29,12 +29,13 @@
 
 <body>
     <div class="main-container">
+        <div class="sub-container">
+            <!-- input file -->
+            <input type="file" id="file-input" style="display:none" webkitdirectory multiple >
         <div class="box-2">
-            <div class="result">
-                <!-- input file -->
+            <div class="result" onclick="document.getElementById('file-input').click()">
                 <div class="" id="add-folder" >
-                <input type="file" id="file-input" style="display:none" webkitdirectory multiple >
-                <svg onclick="document.getElementById('file-input').click()" xmlns="http://www.w3.org/2000/svg" height="200" id="add-svg" width="200" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16"> <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/> <path d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/> </svg>
+                <svg  xmlns="http://www.w3.org/2000/svg" height="200" id="add-svg" width="200" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16"> <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/> <path d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/> </svg>
                 </input>
             </div>
 
@@ -42,8 +43,8 @@
       </div>
 
       <div class="buttons">
-          <button class="button-47" id="prev-btn">Previous</button>
-        <button class="button-47" id="next-btn">Next</button>
+          <button class="hide button-47" id="prev-btn">Previous</button>
+        <button class="hide button-47" id="next-btn">Next</button>
       </div>
 
       <div id="imageViewer">
@@ -59,22 +60,20 @@
           </label>
           <span class="lang-title">Nep</span>
         </div>
-        <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
+        <textarea id="transliterateTextarea" class="text-input"></textarea>
         <div id="suggestions"></div>
-        <div class="current-index"></div>
-        <p>
+        <p class="help-text">
             Note : Press SpaceBar after typing one word for English to Nepali
-            Translation. <br />If translation is wrong click the word to select from
+            Translation. If translation is wrong click the word to select from
             list of Suggestions.
         </p>
-        <button id="saveButton" class="btn save">Save</button>
+        <button id="saveButton" class="button-47 save">Save</button>
         <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="index.js"></script>
     </div>
+</div>
     </div>
 </body>
-
-</html>
 
 </html>
