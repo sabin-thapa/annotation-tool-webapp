@@ -12,6 +12,9 @@ body {
 .thecontainer {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 8%;
 }
 
 .boxy {
@@ -20,14 +23,11 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    width: 31%;
-    height: 80%;
+    width: 1000px;
+    height: 800px;
     box-shadow: #ddd;
     padding: 1em;
     text-align: left;
-    margin: auto;
-    margin-top: 7.5%;
-    margin-left: 20%;
     font-family: 'Open Sans', Arial, sans-serif;
     font-weight: normal;
     border-radius: 20px;
@@ -35,17 +35,11 @@ body {
 
 }
 
-.imageViewer {
-    width: 31%;
-    height: 80%;
-    background-color: #13bb3a;
-}
 
-.result {
-    height: 400px;
-    width: 400px;
-    background-color: red;
-    margin-right: 2%;
+.result img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }
 
 @media (min-width: 0px) and (max-width: 1800px) {
@@ -304,9 +298,9 @@ figcaption {
     letter-spacing: 1px;
     font-size: 23px;
     line-height: 2.3;
-    padding-top: 5%;
-    padding-left: 20%;
-    width: 30%;
+    width: 1000px;
+    height: 800px;
+    background-color: #13bb3a;
 }
 
 .box {
