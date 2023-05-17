@@ -1,0 +1,250 @@
+body {
+    margin: 0;
+    padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url(https://img.freepik.com/free-vector/white-abstract-background-design_23-2148825582.jpg?w=2000&t=st=1683095940~exp=1683096540~hmac=b8db45767a0b5a184217915aaec970b1c3165699bfb8ecee37e46eee35cf8bd2); 
+}
+
+.main-container {
+    max-width: 80vw;
+    margin-top: 2%;
+    margin-left: 10%;
+}
+
+.sub-container{
+    border: 1px outset grey;
+    outline-offset: rgba(86, 85, 85, 0.504);
+    border-radius: 12px;
+    padding: 1rem;
+    /* margin-top: -19%; */
+}
+
+form {
+  margin: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 140px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.box-2 {
+  height: 500px;
+  width: 100%;
+  /* background-color: rgb(255, 255, 255); */
+}
+
+.result {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.result img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain !important;
+}
+
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #357ae8;
+}
+
+button {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: rgb(139, 135, 135);
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 15px;
+}
+
+button:hover {
+  background-color: #ddd;
+  box-shadow: 0 0.5em 0.5em -0.4em #4e4f4e;
+  transform: translateY(-0.2em);
+  cursor: pointer;
+}
+
+
+.button-47 {
+  align-items: center;
+  background: #FFFFFF;
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #1A202C;
+  display: inline-flex;
+  font-family: Inter, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  height: 56px;
+  width: 120px;
+  justify-content: center;
+  line-height: 24px;
+  overflow-wrap: break-word;
+  padding: 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-right: 1rem;
+}
+
+#suggestions {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.suggestion {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion:hover {
+  background-color: #ddd;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  margin: 4px 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 8px;
+  bottom: 6px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(30px);
+  -ms-transform: translateX(30px);
+  transform: translateX(30px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+    background-color: rgb(255, 255, 255);
+}
+
+.lang-toggle {
+  display: flex;
+  margin-left: 5px;
+  margin-top: 5px;
+  align-items: center;
+}
+
+.lang-title {
+    font-size: 18px;
+} 
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btn {
+    background-color: red;
+    width: 100%;
+}
+
+figure {
+  position: relative;
+  margin: 0;
+}
+
+figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.navbar bg-body-tertiary {
+  width: 100%;
+  height: 60px;
+  color: whitesmoke;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: bolder;
+  font-size: 1.3em;
+  background-image: url(https://images.unsplash.com/photo-1682213916353-279defcd3003?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80);
+}
+
+.hide {
+  display: none !important;
+}
+
+#add-svg {
+cursor: pointer;
+}
+
+.help-text {
+    /* margin-top: -35px; */
+}
