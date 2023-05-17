@@ -7,14 +7,15 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
     <script src="script.js" defer></script>
     <title>Annotation Tool</title>
-    <!--top  bar -->
-    <nav class="navbar">
-        <div class="header">
-            ANNOTATION TOOL
-        </div>
-    </nav </head>
+ </head>
 
 <body>
+        <!--top  bar -->
+        <nav class="navbar">
+            <div class="header">
+                ANNOTATION TOOL
+            </div>
+        </nav
     <div class="thecontainer">
         <div id="imageViewer">
             <!-- left image -->
@@ -83,6 +84,26 @@
                 Translation.
             </p>
         </div>
+        <div class="lang-toggle">
+          <span class="lang-title">Eng</span>
+          <label class="switch">
+            <input type="checkbox" id="toggleNepaliSwitch">
+            <span class="slider round"></span>
+          </label>
+          <span class="lang-title">Nep</span>
+        </div>
+        <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
+        <div id="suggestions"></div>
+        <div class="current-index"></div>
+        <p>
+            Note : Press SpaceBar after typing one word for English to Nepali
+            Translation. <br />If translation is wrong click the word to select from
+            list of Suggestions.
+        </p>
+        <button id="saveButton" class="btn save">Save</button>
+        <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="index.js" defer></script>
     </div>
 
 
