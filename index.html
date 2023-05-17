@@ -5,83 +5,93 @@
     <link rel="stylesheet" href="index.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-      crossorigin="anonymous"
-    />
-    <!-- Normalize CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
-    />
-    <!-- Cropper CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"
-    />
-    <!-- Cropper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
     <script src="script.js" defer></script>
     <title>Annotation Tool</title>
-</head>
+    <!--top  bar -->
+    <nav class="navbar">
+        <div class="header">
+            ANNOTATION TOOL
+        </div>
+    </nav </head>
 
 <body>
-    <br />
-    <div class="container">
-      <!-- input file -->
-      <div class="box">
-        <input type="file" id="file-input" webkitdirectory multiple />
-      </div>
-      <!-- left image -->
-      <div class="box-2">
-        <div class="result"></div>
-      </div>
-      <!--cropped image-->
-      <div class="box-2 img-result hide">
-        <!-- result of crop -->
-        <img class="cropped" src="" alt="" />
-      </div>
-      <div class="buttons">
-        <button class="btn" id="next-btn">Next</button>
-        <button class="btn" id="prev-btn">Previous</button>
-      </div>
-      <!-- input file -->
-      <div class="box">
-        <div class="options hide">
-          <label> Width</label>
-          <input type="number" class="img-w" value="300" min="100" max="1200" />
-        </div>
-      </div>
-      <div id="imageViewer">
-        <div>
-          <img id="image" src="" />
-          <span id="imageCaption"></span>
-        </div>
-        <div class="lang-toggle">
-          <span class="lang-title">Eng</span>
-          <label class="switch">
-            <input type="checkbox" id="toggleNepaliSwitch">
-            <span class="slider round"></span>
-          </label>
-          <span class="lang-title">Nep</span>
-        </div>
-        <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
-        <div id="suggestions"></div>
-        <div class="current-index"></div>
-        <p>
-            Note : Press SpaceBar after typing one word for English to Nepali
-            Translation. <br />If translation is wrong click the word to select from
-            list of Suggestions.
-        </p>
-        <button id="saveButton" class="btn save">Save</button>
-        <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="index.js"></script>
-    </div>
-</body>
+    <div class="thecontainer">
+        <div id="imageViewer">
+            <!-- left image -->
+            <div class="box-2">
+                <div class="result"></div>
+            </div>
+            <!--cropped image-->
+            <!-- <div class="box-2 img-result hide">
+                <!-- result of crop 
+                <img class="cropped" src="" alt="" />
+            </div> -->
 
-</html>
+            <div class="buttons">
+
+                <button class="btn" id="prev-btn"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                        fill="black" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                    </svg></button>
+                <button class="btn" id="next-btn"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                        fill="blacks" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg></button>
+            </div>
+
+            <div class="widthHeight">
+                <div class="options hide">
+                    <label> Width&nbsp;</label>
+                    <input type="number" class="img-w" value="300" min="100" max="1200" />
+                    <br> <br>
+                    <label> Height </label>
+                    <input type="number" class="img-w" value="100" min="100" max="1200" />
+                </div>
+            </div>
+        </div>
+
+        <div class="boxy">
+            <div class="lang-toggle">
+                <span class="lang-title">Eng</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggleNepaliSwitch" />
+                    <span class="slider round"></span>
+                </label>
+                <span class="lang-title">Nep </span>
+            </div>
+
+            <br> <br>
+            <!--text input area-->
+            <textarea id="transliterateTextarea"></textarea>
+            <div id="suggestions"></div>
+            <div class="current-index"></div>
+            <br> <br>
+
+            <!-- input file -->
+            <div class="box">
+
+                <input type="file" id="file-input" webkitdirectory multiple />
+
+                <button id="deleteButton">Delete</button>
+            </div>
+            <br>
+            <button id="save-button" class="btn save hide">Save</button>
+            <p> <br> <br>
+                Note : Press SpaceBar after typing one word for English to Nepali
+                Translation.
+            </p>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="index.js"></script>
+
+</body>
 
 </html>
