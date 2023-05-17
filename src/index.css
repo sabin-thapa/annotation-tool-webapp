@@ -4,7 +4,7 @@ body {
   padding-left: 32%;
   padding-top: 10%;
   padding-right: 26%;
-  background-image: url(https://img.freepik.com/free-vector/white-abstract-background-design_23-2148825582.jpg?w=2000&t=st=1683095940~exp=1683096540~hmac=b8db45767a0b5a184217915aaec970b1c3165699bfb8ecee37e46eee35cf8bd2) !important; 
+  background-image: url(https://img.freepik.com/free-vector/white-abstract-background-design_23-2148825582.jpg?w=2000&t=st=1683095940~exp=1683096540~hmac=b8db45767a0b5a184217915aaec970b1c3165699bfb8ecee37e46eee35cf8bd2); 
   border: 3px solid;
   border-color: #4e4f4e;
   border-width: 8px;
@@ -52,6 +52,7 @@ textarea {
   object-fit: contain;
 }
 
+
 textarea:focus {
   outline: none;
   box-shadow: 0 0 0 2px #357ae8;
@@ -60,7 +61,7 @@ textarea:focus {
 button {
   margin: 5px;
   padding: 5px 10px;
-  background-color: #eeee;
+  background-color: rgb(139, 135, 135);
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -73,6 +74,33 @@ button:hover {
   box-shadow: 0 0.5em 0.5em -0.4em #4e4f4e;
   transform: translateY(-0.2em);
   cursor: pointer;
+}
+
+
+.button-47 {
+  align-items: center;
+  background: #FFFFFF;
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #1A202C;
+  display: inline-flex;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  height: 56px;
+  width: 100px;
+  justify-content: center;
+  line-height: 24px;
+  overflow-wrap: break-word;
+  padding: 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-right: 1rem;
 }
 
 #suggestions {
@@ -162,6 +190,13 @@ input:checked + .slider:before {
 .buttons {
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn {
+    background-color: red;
+    width: 100%;
 }
 
 figure {
@@ -195,6 +230,6 @@ figcaption {
   display: none !important;
 }
 
-#folder-add {
-    display: flex;
+#add-svg {
+cursor: pointer;
 }
