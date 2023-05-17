@@ -10,7 +10,7 @@ body {
   border-width: 8px;
 }
 
-.container {
+.main-container {
   border: 2px outset grey;
   outline-offset: rgba(86, 85, 85, 0.504);
   border-radius: 12px;
@@ -33,8 +33,8 @@ textarea {
 }
 
 .box-2 {
-  width: 100%;
   height: 800px;
+  width: 100%;
   background-color: rgb(255, 255, 255);
 }
 
@@ -86,10 +86,10 @@ button:hover {
   color: #1A202C;
   display: inline-flex;
   font-family: Inter, sans-serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   height: 56px;
-  width: 100px;
+  width: 120px;
   justify-content: center;
   line-height: 24px;
   overflow-wrap: break-word;
@@ -130,9 +130,9 @@ button:hover {
 .switch {
   position: relative;
   display: inline-block;
-  width: 30px;
-  height: 18px;
-  margin: 0 10px;
+  width: 60px;
+  height: 28px;
+  margin: 4px 10px;
 }
 
 /* Hide default HTML checkbox */
@@ -161,16 +161,16 @@ button:hover {
   height: 13px;
   width: 13px;
   left: 2px;
-  bottom: 2px;
+  bottom: 6px;
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(13px);
-  -ms-transform: translateX(13px);
-  transform: translateX(13px);
+  -webkit-transform: translateX(38px);
+  -ms-transform: translateX(38px);
+  transform: translateX(38px);
 }
 
 /* Rounded sliders */
@@ -180,12 +180,21 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+  height: 16px;
+  width: 16px;
+    background-color: rgb(255, 255, 255);
 }
 
 .lang-toggle {
   display: flex;
   margin-left: 5px;
+  margin-top: 10px;
+  align-items: center;
 }
+
+.lang-title {
+    font-size: 24px;
+} 
 
 .buttons {
   display: flex;
