@@ -3,8 +3,8 @@ const uploadedImage = document.querySelector(".result");
 const resultImage = document.querySelector(".img-result");
 const croppedImage = document.querySelector(".cropped");
 const imageWidth = document.querySelector(".img-w");
+const addFolderElement = document.querySelector('#add-folder')
 
-const options = document.querySelector(".options");
 const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector(".download");
 const nextBtn = document.querySelector("#next-btn");
@@ -39,6 +39,9 @@ fileInput.addEventListener("change", (e) => {
 function showImage(index) {
   if (fileList.length) {
     console.log("hey");
+    addFolderElement.classList.add('hide')
+    nextBtn.classList.remove('hide');
+    prevBtn.classList.remove('hide');
 
     //First image
     const file = fileList[index];
@@ -60,7 +63,6 @@ function showImage(index) {
 
         //display buttons
         saveBtn.classList.remove("hide");
-        options.classList.remove("hide");
 
         //CROPPER
         cropper = new Cropper(img);
@@ -73,7 +75,7 @@ function showImage(index) {
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // const img = document.querySelector(".result img");
+  const img = document.querySelector(".result img");
 
   // Get cropped area of the image
   const croppedCanvas = cropper.getCroppedCanvas();
@@ -114,7 +116,7 @@ saveBtn.addEventListener("click", (e) => {
             } else {
               console.error("Failed to save original image!");
             }
-            // return res.text();
+            return res.text();
           })
           .then((data) => {
             console.log(data, "Save original image response");
@@ -177,7 +179,6 @@ function toggleNepaliMode(isNepaliMode) {
 }
 
 inputTextField.addEventListener("input", async (e) => {
-  e.preventDefault();
   if (!nepaliMode) return;
 
   const textValue = e.target.value;
@@ -281,3 +282,4 @@ function selectSuggestedWord(text, index) {
 
 //   console.log("Saved data to CSV!");
 // }
+

@@ -1,104 +1,80 @@
 <html>
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="index.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+    <!-- Normalize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <!-- Cropper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"
+    />
     <!-- Cropper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
     <script src="script.js" defer></script>
     <title>Annotation Tool</title>
-  </head>
+</head>
 
-  <!--top  bar -->
-  <nav class="navbar">
-    <div class="header">ANNOTATION TOOL</div>
-  </nav>
-  <body>
-    <div class="thecontainer">
-      <div class="boxy">
+<body>
+    <div class="container">
+        <div class="box-2">
+            <div class="result">
+                <!-- input file -->
+                <div class="" id="add-folder" >
+                <input type="file" id="file-input" style="display:none" webkitdirectory multiple >
+                <svg onclick="document.getElementById('file-input').click()" xmlns="http://www.w3.org/2000/svg" height="200" width="200" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16"> <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/> <path d="M13.5 10a.5.5 0 0 1 .5.5V12h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V13h-1.5a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"/> </svg>
+                </input>
+            </div>
+
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn hide" id="next-btn">Next</button>
+        <button class="btn hide" id="prev-btn">Previous</button>
+      </div>
+
+      <div id="imageViewer">
+        <div>
+          <img id="image" src="" />
+          <span id="imageCaption"></span>
+        </div>
         <div class="lang-toggle">
           <span class="lang-title">Eng</span>
           <label class="switch">
-            <input type="checkbox" id="toggleNepaliSwitch" />
+            <input type="checkbox" id="toggleNepaliSwitch">
             <span class="slider round"></span>
           </label>
-          <span class="lang-title">Nep </span>
+          <span class="lang-title">Nep</span>
         </div>
-
-        <br />
-        <br />
-        <!--text input area-->
-        <textarea id="transliterateTextarea"></textarea>
+        <textarea id="transliterateTextarea" style="width: 600px; height: 200px"></textarea>
         <div id="suggestions"></div>
         <div class="current-index"></div>
-        <br />
-        <br />
-
-        <!-- input file -->
-        <div class="box">
-          <input type="file" id="file-input" webkitdirectory multiple />
-
-          <button id="deleteButton">Delete</button>
-        </div>
-        <br />
-        <button id="save-button" class="btn save hide">Save</button>
         <p>
-          <br />
-          <br />
-          Note : Press SpaceBar after typing one word for English to Nepali
-          Translation.
+            Note : Press SpaceBar after typing one word for English to Nepali
+            Translation. <br />If translation is wrong click the word to select from
+            list of Suggestions.
         </p>
-      </div>
-      <div id="imageViewer">
-        <div class="box-2">
-          <div class="result"></div>
-        </div>
-        <div class="buttons">
-          <button class="btn" id="prev-btn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              fill="black"
-              class="bi bi-arrow-left"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-              />
-            </svg>
-          </button>
-          <button class="btn" id="next-btn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              fill="blacks"
-              class="bi bi-arrow-right"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
-      <script src="https://d3js.org/d3.v7.min.js"></script>
-      <script src="index.js" defer></script>
+        <button id="saveButton" class="btn save">Save</button>
+        <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="index.js"></script>
     </div>
+    </div>
+</body>
 
-    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="index.js"></script>
-  </body>
+</html>
+
 </html>
