@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
@@ -11,8 +10,12 @@ dotenv.config();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", urlencoded: true }));
-app.use(fileUpload());
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(fileUpload({
+  limits: {
+    fileSize: 10 * 1024 * 1024 //10MB
+  }
+}));
 
 const PORT = process.env.PORT || 3000;
 

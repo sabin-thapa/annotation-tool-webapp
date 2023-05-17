@@ -73,7 +73,7 @@ function showImage(index) {
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const img = document.querySelector(".result img");
+  // const img = document.querySelector(".result img");
 
   // Get cropped area of the image
   const croppedCanvas = cropper.getCroppedCanvas();
@@ -114,7 +114,7 @@ saveBtn.addEventListener("click", (e) => {
             } else {
               console.error("Failed to save original image!");
             }
-            return res.text();
+            // return res.text();
           })
           .then((data) => {
             console.log(data, "Save original image response");
@@ -177,6 +177,7 @@ function toggleNepaliMode(isNepaliMode) {
 }
 
 inputTextField.addEventListener("input", async (e) => {
+  e.preventDefault();
   if (!nepaliMode) return;
 
   const textValue = e.target.value;
