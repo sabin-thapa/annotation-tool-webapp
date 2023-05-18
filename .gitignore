@@ -3,5 +3,7 @@ csv/
 node_modules/
 original/
 assets/
+.DS_Store
+src/.DS_Store
 
 mime.json
