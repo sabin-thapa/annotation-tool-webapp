@@ -3,7 +3,7 @@ const uploadedImage = document.querySelector(".result");
 const resultImage = document.querySelector(".img-result");
 const croppedImage = document.querySelector(".cropped");
 const imageWidth = document.querySelector(".img-w");
-const addFolderElement = document.querySelector('#add-folder')
+const addFolderElement = document.querySelector("#add-folder");
 
 const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector(".download");
@@ -26,9 +26,11 @@ let suggestions = [];
 let suggestedWord = "";
 let nepaliMode = false;
 
-const saveCroppedEndpoint = `http://localhost:3000/save-cropped`;
-const saveOriginalEndpoint = `http://localhost:3000/save-original`;
-const saveCSVEndpoint = `http://localhost:3000/save-csv`;
+const baseUrl = 'http://localhost:3000'
+
+let saveCroppedEndpoint; 
+let saveOriginalEndpoint; 
+let saveCSVEndpoint; 
 
 // After an image has been selected
 fileInput.addEventListener("change", (e) => {
@@ -38,10 +40,9 @@ fileInput.addEventListener("change", (e) => {
 
 function showImage(index) {
   if (fileList.length) {
-    console.log("hey");
-    addFolderElement.classList.add('hide')
-    nextBtn.classList.remove('hide');
-    prevBtn.classList.remove('hide');
+    addFolderElement.classList.add("hide");
+    nextBtn.classList.remove("hide");
+    prevBtn.classList.remove("hide");
 
     //First image
     const file = fileList[index];
@@ -69,6 +70,16 @@ function showImage(index) {
       }
     });
     reader.readAsDataURL(file);
+
+    //Get the folder name of the folder containing images
+    const folderPath = file.webkitRelativePath;
+    const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"))
+    console.log(folderName, "folder name \n")
+
+    //Update the endpoints
+    saveCroppedEndpoint = `${baseUrl}/${folderPath}/save-cropped`;
+    saveOriginalEndpoint = `${baseUrl}/${folderPath}/save-original`;
+    saveCSVEndpoint = `${baseUrl}/${folderPath}/save-csv`;
   }
 }
 
@@ -134,7 +145,7 @@ saveBtn.addEventListener("click", (e) => {
 
   // SAVE TO CSV
   //data
-  const  imageName = `csv_${currentIndex}.csv`
+  const imageName = `csv_${currentIndex}.csv`;
   const annotatedText = inputTextField.value;
   const isNepali = nepaliMode;
 
@@ -282,4 +293,3 @@ function selectSuggestedWord(text, index) {
 
 //   console.log("Saved data to CSV!");
 // }
-

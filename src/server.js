@@ -25,16 +25,18 @@ app.get("/", (req, res) => {
 
 // Endpoint for saving cropped images
 
-app.post("/save-cropped", (req, res) => {
+app.post("/:folderPath*/save-cropped", (req, res) => {
   const { imageName, imageData } = req.body;
-
+  const folderName = req.params.folder;
+  const folderPath = req.params.folderPath;
   const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
 
-  const imagePath = path.join(__dirname, "cropped", imageName);
+  const imagePath = path.join(folderPath, "cropped", imageName);
 
   // Create a directory if it doesn't exist
   const directory = path.dirname(imagePath);
-  fs.mkdir(directory, { recursive: true }, (err) => {
+
+  fs.mkdirSync(directory, { recursive: true }, (err) => {
     if (err) {
       console.error("Error creating directory:", err);
       res.sendStatus(500);
@@ -55,20 +57,23 @@ app.post("/save-cropped", (req, res) => {
 
 // Endpoint for saving the original image
 
-app.post("/save-original", (req, res) => {
+app.post("/:folderPath*/save-original", (req, res) => {
   const { imageName } = req.body;
   const imageData = req.files && req.files.imageData;
+  const folderName = req.params.folder;
+  const folderPath = req.params.folderPath;
+  console.log(folderPath, "FOLDER PATH \n")
 
   if (!imageData) {
     res.status(400).send("No image file received");
     return;
   }
 
-  const imagePath = path.join(__dirname, "original", imageName);
+  const imagePath = path.join(folderPath, "original",  imageName);
 
   // Create the directory if it doesn't exist
   const directory = path.dirname(imagePath);
-  fs.mkdir(directory, { recursive: true }, (err) => {
+  fs.mkdirSync(directory, { recursive: true }, (err) => {
     if (err) {
       console.error("Error creating directory:", err);
       res.sendStatus(500);
@@ -86,14 +91,17 @@ app.post("/save-original", (req, res) => {
   });
 });
 
-app.post("/save-csv", (req, res) => {
+app.post("/:folderPath*/save-csv", (req, res) => {
   const {imageName, annotatedText, isNepali} = req.body;
-  console.log(imageName, 'Image Name')
-  const csvPath = path.join(__dirname, "csv", imageName);
+  const folderName = req.params.folder;
+  const folderPath = req.params.folderPath;
+  
+
+  const csvPath = path.join(folderPath, "csv", imageName);
 
   //Create a directory if it doesn't exist
   const directory = path.dirname(csvPath);
-  fs.mkdir(directory, {recursive: true}, (err) => {
+  fs.mkdirSync(directory, {recursive: true}, (err) => {
     if(err){
       console.error('Error creating directory: ', err);
       res.sendStatus(500);
