@@ -1,14 +1,7 @@
 * {
   background-color: #ffffff;
-  
-}
 
-.topnav {
-  overflow: hidden;
-  background: radial-gradient(48.69% 20933.5% at 48.69% 50%, rgba(171, 175, 176, 0) 0%, #8EB9CC 83.97%);
-  width: 100%;
-  height: 45px;
-  box-shadow: 1px 5 px rgba(171, 175, 176, 0)
+
 }
 
 body {
@@ -16,6 +9,20 @@ body {
   padding: 0;
   background-color: #ccc;
   font-family: Arial, sans-serif;
+  border: 1px solid #011521;
+  border-top: none;
+}
+
+.topnav {
+  overflow: hidden;
+  background: radial-gradient(48.69% 20933.5% at 48.69% 50%, rgba(171, 175, 176, 0) 0%, #6aa2ba 83.97%);
+  width: 100%;
+  height: 15px;
+  box-shadow: 1px 5 px rgba(171, 175, 176, 0);
+  text-align: center;
+  font-weight: bolder;
+  color: rgb(10, 62, 82);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .main-container {
@@ -47,25 +54,30 @@ textarea {
   margin: 0%;
   padding: 10px;
   font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .box-2 {
-  height: 800px;
-  width: 100%;
+  height: 500px;
+  width: 80%;
   background-color: rgb(207, 207, 207);
   padding: 0%;
-  margin-top: 1%;;
+
   border: none;
   border-radius: 5px;
-  background-image: url("https://img.freepik.com/premium-vector/wave-blue-background_393879-31.jpg?w=1060");
+  background-image: url("https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?w=1380&t=st=1684471756~exp=1684472356~hmac=50962e9f62fde873d62ae32d5cfb245cf5b0c6331ad29f9c3c0ee17ffa995314");
   background-size: 100%;
   background-position: inherit;
-  box-shadow: 0 2px 4px rgba(1, 0, 0, 0.3);
+  box-shadow: 2px 2px 2px 2px rgba(1, 0, 0, 0.3);
+  margin: auto;
+  margin-top: 1.2%;
 }
 
+
+
+
 .result {
-  height: 800px;
+  height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -81,7 +93,7 @@ textarea {
   object-fit: contain !important;
 }
 
-.name_of_image{
+.name_of_image {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
@@ -96,6 +108,7 @@ textarea {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #c6d8e1;
 }
+
 textarea:focus {
   outline: none;
   box-shadow: 0 0 0 2px #357ae8;
@@ -104,7 +117,7 @@ textarea:focus {
 
 
 #suggestions {
-  margin: 20px 0;
+  margin: 6px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -150,7 +163,7 @@ textarea:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #5F5F5F;
+  background-color: #ededed;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -182,7 +195,7 @@ input:checked+.slider:before {
   border-radius: 50%;
   height: 16px;
   width: 16px;
-  background-color: rgb(255, 255, 255);
+  background-color: #6ab0cf;
 }
 
 .lang-toggle {
@@ -198,12 +211,7 @@ input:checked+.slider:before {
   color: #5F5F5F;
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
+
 
 .btn {
   background-color: red;
@@ -232,16 +240,15 @@ figcaption {
 
 
 #add-folder {
-cursor: pointer;
-position: relative;
-height: 100px;
+  cursor: pointer;
+  position: relative;
+  height: 100px;
 }
 
 
 button {
   margin: 5px;
   padding: 5px 10px;
-  background-color: #A7D2E4;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -258,7 +265,7 @@ button:hover {
 
 .button-47 {
   align-items: center;
-  background: #8EB9CC;
+  background: #6aa2ba;
   border: 0 solid #E2E8F0;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
@@ -287,10 +294,36 @@ button:hover {
 #saveButton {
   margin-top: 0;
   position: relative;
-  left: 50%;
+  left: 60%;
 }
 
 
 .help-text {
-  color: #3F3E3E;
+  color: #717171;
+  font-size: smaller;
+}
+
+
+
+#prev-btn {
+  font-size: small;
+  margin: 3px;
+  padding: 3px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  padding: 6px;
+  height: 32px;
+  width: 80px;
+}
+
+#next-btn {
+  font-size: small;
+  margin: 3px;
+  padding: 6px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  padding: 6px;
+  height: 32px;
+  width: 80px;
+
 }
