@@ -4,6 +4,7 @@ const resultImage = document.querySelector(".img-result");
 const croppedImage = document.querySelector(".cropped");
 const imageWidth = document.querySelector(".img-w");
 const addFolderElement = document.querySelector("#add-folder");
+const imageNameElement = document.querySelector('#image-name')
 
 const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector(".download");
@@ -43,6 +44,7 @@ function showImage(index) {
     addFolderElement.classList.add("hide");
     nextBtn.classList.remove("hide");
     prevBtn.classList.remove("hide");
+    imageNameElement.classList.remove('hide')
 
     //First image
     const file = fileList[index];
@@ -75,6 +77,9 @@ function showImage(index) {
     const folderPath = file.webkitRelativePath;
     const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"))
     console.log(folderName, "folder name \n")
+
+    //Update imageName
+    imageNameElement.innerHTML = folderPath
 
     //Update the endpoints
     saveCroppedEndpoint = `${baseUrl}/${folderPath}/save-cropped`;
