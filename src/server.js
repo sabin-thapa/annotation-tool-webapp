@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
+const archiver = require('archiver');
 
 dotenv.config();
 
@@ -32,13 +33,7 @@ app.post("/:folderPath*/save-cropped", (req, res) => {
   // Create a directory if it doesn't exist
   const directory = path.dirname(imagePath);
 
-  fs.mkdirSync(directory, { recursive: true }, (err) => {
-    if (err) {
-      console.error("Error creating directory:", err);
-      res.sendStatus(500);
-      return;
-    }
-  });
+  fs.mkdirSync(directory, { recursive: true });
 
   fs.writeFile(imagePath, base64Data, "base64", (err) => {
     if (err) {
@@ -55,7 +50,6 @@ app.post("/:folderPath*/save-cropped", (req, res) => {
 app.post("/:folderPath*/save-original", (req, res) => {
   const { imageName } = req.body;
   const imageData = req.files && req.files.imageData;
-  const folderName = req.params.folder;
   const folderPath = req.params.folderPath;
   console.log(folderPath, "FOLDER PATH \n")
 
@@ -68,13 +62,7 @@ app.post("/:folderPath*/save-original", (req, res) => {
 
   // Create the directory if it doesn't exist
   const directory = path.dirname(imagePath);
-  fs.mkdirSync(directory, { recursive: true }, (err) => {
-    if (err) {
-      console.error("Error creating directory:", err);
-      res.sendStatus(500);
-      return;
-    }
-  });
+  fs.mkdirSync(directory, { recursive: true });
   imageData.mv(imagePath, (err) => {
     if (err) {
       console.error("Error saving the original image: ", err);
@@ -88,35 +76,83 @@ app.post("/:folderPath*/save-original", (req, res) => {
 
 // Endpoint for saving the csv file
 app.post("/:folderPath*/save-csv", (req, res) => {
-  const {imageName, annotatedText, isNepali} = req.body;
-  const folderName = req.params.folder;
+  const { imageName, annotatedText, isNepali } = req.body;
   const folderPath = req.params.folderPath;
-  
 
   const csvPath = path.join(folderPath, "csv", imageName);
 
-  //Create a directory if it doesn't exist
+  // Create the directory structure if it doesn't exist
   const directory = path.dirname(csvPath);
-  fs.mkdirSync(directory, {recursive: true}, (err) => {
-    if(err){
-      console.error('Error creating directory: ', err);
+  fs.mkdirSync(directory, { recursive: true });
+
+  // Create CSV content - Headers and Data
+  const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
+
+  // Write content to the CSV file
+  fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {
+    if (err) {
+      console.error('Error writing to CSV file:', err);
       res.sendStatus(500);
       return;
     }
+    console.log('Data saved to CSV:', imageName);
+    res.sendStatus(200);
+  });
+});
+
+
+// Endpoint for zipping files
+app.get("/:folderPath/zip-files", (req, res) => {
+  const folderPath = req.params.folderPath;
+  const zipPath = path.join(folderPath, "zipped");
+  const zipFilePath = path.join(zipPath, "files.zip");
+
+  //Create a directory if it doesn't exist
+  fs.mkdirSync(zipPath, {recursive:true})
+
+  //Create a new archive file
+  const archive = archiver('zip', {
+    zlib: {level: 9} //compression level
   })
-   //Create CSV content - Headers and Data
-   const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
- 
-  //Write content to csv file
-  fs.writeFile(csvPath, csvContent, {encoding: "utf8"}, (err) => {
-    if(err){
-      console.error('Error writing to csv file: ', err);
-      res.sendStatus(500);
-      return;
-    }
-    console.log('Data saved to CSV: ', imageName);
-    res.sendStatus(200)
+
+  //Create write stream for the zip file
+  const output = fs.createWriteStream(zipFilePath);
+
+  //Pipe archive data to the write stream
+  archive.pipe(output)
+
+  //Add original image, cropped iamge and csv to the archive
+  const originalImagePath = path.join(folderPath, "original", req.query.imageName)
+  archive.file(originalImagePath, {name: "original.png"});
+
+  const croppedImagePath = path.join(folderPath, "cropped", `cropped_${req.query.index}.png`)
+  archive.file(croppedImagePath, {name: "cropped.png"})
+
+  const csvPath = path.join(folderPath, "csv", `csv_${req.query.index}.csv`)
+  archive.file(csvPath, {name: "data.csv"})
+
+  //Finalize archive
+  archive.finalize()
+
+  //Wait for the archive to be created and sent it as a response
+  output.on('finish', () => {
+    console.log('Files zipped successfully');
+
+    res.download(zipFilePath, 'files.zip', err => {
+      if(err) {
+        console.error('Error sending the zip file: ',err);
+        res.sendStatus(500)
+      }
+
+      //Remove the zip file after it has been sent
+      fs.unlink(zipFilePath, err => {
+        if(err) {
+          console.error('Error removing the zip file: ', err)
+        }
+      })
+    })
   })
+
 })
 
 app.listen(PORT, () => {

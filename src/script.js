@@ -4,7 +4,7 @@ const resultImage = document.querySelector(".img-result");
 const croppedImage = document.querySelector(".cropped");
 const imageWidth = document.querySelector(".img-w");
 const addFolderElement = document.querySelector("#add-folder");
-const imageNameElement = document.querySelector('#image-name')
+const imageNameElement = document.querySelector("#image-name");
 
 const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector(".download");
@@ -29,11 +29,11 @@ let suggestedWord = "";
 let nepaliMode = false;
 
 //BASE URL
-const baseUrl = 'http://localhost:3000'
+const baseUrl = "http://localhost:3000";
 
-let saveCroppedEndpoint; 
-let saveOriginalEndpoint; 
-let saveCSVEndpoint; 
+let saveCroppedEndpoint;
+let saveOriginalEndpoint;
+let saveCSVEndpoint;
 
 // Run after an image has been selected
 fileInput.addEventListener("change", (e) => {
@@ -46,7 +46,7 @@ function showImage(index) {
     addFolderElement.classList.add("hide");
     nextBtn.classList.remove("hide");
     prevBtn.classList.remove("hide");
-    imageNameElement.classList.remove('hide')
+    imageNameElement.classList.remove("hide");
 
     //First image
     const file = fileList[index];
@@ -77,11 +77,11 @@ function showImage(index) {
 
     //Get the folder name of the folder containing images
     const folderPath = file.webkitRelativePath;
-    const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"))
-    console.log(folderName, "folder name \n")
+    const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
+    console.log(folderName, "folder name \n");
 
     //Update imageName
-    imageNameElement.innerHTML = folderPath
+    imageNameElement.innerHTML = folderPath;
 
     //Update the endpoints
     saveCroppedEndpoint = `${baseUrl}/${folderPath}/save-cropped`;
@@ -103,6 +103,9 @@ saveBtn.addEventListener("click", (e) => {
   croppedImageName = `cropped_${currentIndex}.png`;
   croppedImageLink = croppedCanvas.toDataURL("image/png");
 
+  const originalImageName = `backup_${currentIndex}.png`;
+  const originalImageFile = fileList[currentIndex];
+
   fetch(saveCroppedEndpoint, {
     method: "POST",
     body: JSON.stringify({
@@ -118,9 +121,6 @@ saveBtn.addEventListener("click", (e) => {
         console.log("Cropped image saved successfully!");
 
         // Save original image
-        const originalImageName = `backup_${currentIndex}.png`;
-        const originalImageFile = fileList[currentIndex];
-
         const formData = new FormData();
         formData.append("imageName", originalImageName);
         formData.append("imageData", originalImageFile);
@@ -132,6 +132,59 @@ saveBtn.addEventListener("click", (e) => {
           .then((res) => {
             if (res.ok) {
               console.log("Original image saved successfully!");
+
+              // SAVE TO CSV
+              //data
+              const imageName = `csv_${currentIndex}.csv`;
+              const annotatedText = inputTextField.value;
+              const isNepali = nepaliMode;
+
+              fetch(saveCSVEndpoint, {
+                method: "POST",
+                body: JSON.stringify({
+                  imageName,
+                  annotatedText,
+                  isNepali,
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }).then((res) => {
+                if (res.ok) {
+                  console.log("Saved successfully to CSV");
+
+                  //ZIP FILES
+                  const folderPath = "zip";
+                  const zipEndPoint = `${baseUrl}/${folderPath}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
+                  fetch(zipEndPoint)
+                    .then((res) => {
+                      if (res.ok) {
+                        console.log("Files zipped successfully!");
+                        return res.blob();
+                      } else {
+                        console.error("Error zipping file: ", res.status);
+                        throw new Error("Failed to zip files.");
+                      }
+                    })
+                    .then((blob) => {
+                      if (blob) {
+                        //Create a temp link to download
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "files.zip";
+
+                        link.click();
+
+                        URL.revokeObjectURL(link.href);
+                      } else {
+                        throw new Error("Empty zip file.");
+                      }
+                    })
+                    .catch((err) => {
+                      console.error("Error zipping files: ", err);
+                    });
+                }
+              });
             } else {
               console.error("Failed to save original image!");
             }
@@ -140,6 +193,7 @@ saveBtn.addEventListener("click", (e) => {
           .then((data) => {
             console.log(data, "Save original image response");
           })
+
           .catch((err) => {
             console.error("Error saving original image: ", err);
           });
@@ -150,28 +204,6 @@ saveBtn.addEventListener("click", (e) => {
     .catch((err) => {
       console.error("Error saving cropped image: ", err);
     });
-
-  // SAVE TO CSV
-  //data
-  const imageName = `csv_${currentIndex}.csv`;
-  const annotatedText = inputTextField.value;
-  const isNepali = nepaliMode;
-
-  fetch(saveCSVEndpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      imageName,
-      annotatedText,
-      isNepali,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((res) => {
-    if (res.ok) {
-      console.log("Saved successfully to CSV");
-    }
-  });
 
   console.log("saved");
 });

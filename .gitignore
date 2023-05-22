@@ -6,5 +6,6 @@ assets/
 .DS_Store
 **/.DS_Store
 
+*.zip
 
 mime.json
