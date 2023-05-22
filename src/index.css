@@ -203,6 +203,12 @@ input:checked+.slider:before {
   margin-top: 1%;
   margin-bottom: 1%;
   align-items: center;
+  justify-content: space-between;
+}
+
+.lang-toggle-left {
+  display: flex;
+  align-items: center;
 }
 
 .lang-title {
@@ -290,12 +296,12 @@ button:hover {
   margin-top: 0%;
   margin-bottom: 1%;
 }
-
+/* 
 #saveButton {
   margin-top: 0;
   position: relative;
   left: 60%;
-}
+} */
 
 
 .help-text {
