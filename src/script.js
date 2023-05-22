@@ -4,6 +4,7 @@ const resultImage = document.querySelector(".img-result");
 const croppedImage = document.querySelector(".cropped");
 const imageWidth = document.querySelector(".img-w");
 const addFolderElement = document.querySelector("#add-folder");
+const imageNameElement = document.querySelector('#image-name')
 
 const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector(".download");
@@ -14,6 +15,7 @@ const toggleNepaliSwitchBtn = document.querySelector("#toggleNepaliSwitch"); //t
 const suggestionsElement = document.querySelector("#suggestions"); //suggestionDiv
 const inputTextField = document.querySelector("#transliterateTextarea"); //inputField
 
+// Initialize required variables
 let cropper = "";
 let croppedImageLink = "";
 let croppedImageName = "";
@@ -26,13 +28,14 @@ let suggestions = [];
 let suggestedWord = "";
 let nepaliMode = false;
 
+//BASE URL
 const baseUrl = 'http://localhost:3000'
 
 let saveCroppedEndpoint; 
 let saveOriginalEndpoint; 
 let saveCSVEndpoint; 
 
-// After an image has been selected
+// Run after an image has been selected
 fileInput.addEventListener("change", (e) => {
   fileList = e.target.files;
   showImage(0);
@@ -43,6 +46,7 @@ function showImage(index) {
     addFolderElement.classList.add("hide");
     nextBtn.classList.remove("hide");
     prevBtn.classList.remove("hide");
+    imageNameElement.classList.remove('hide')
 
     //First image
     const file = fileList[index];
@@ -76,6 +80,9 @@ function showImage(index) {
     const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"))
     console.log(folderName, "folder name \n")
 
+    //Update imageName
+    imageNameElement.innerHTML = folderPath
+
     //Update the endpoints
     saveCroppedEndpoint = `${baseUrl}/${folderPath}/save-cropped`;
     saveOriginalEndpoint = `${baseUrl}/${folderPath}/save-original`;
@@ -83,6 +90,7 @@ function showImage(index) {
   }
 }
 
+// After save button is pressed
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -168,6 +176,7 @@ saveBtn.addEventListener("click", (e) => {
   console.log("saved");
 });
 
+// Iterate through the images in the folder
 nextBtn.addEventListener("click", () => {
   currentIndex = (currentIndex + 1) % fileList.length;
   showImage(currentIndex);
