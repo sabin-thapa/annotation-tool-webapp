@@ -17,17 +17,13 @@ app.use(fileUpload({
   }
 }));
 
+//PORT
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("<h1> Hello </h1>");
-});
 
 // Endpoint for saving cropped images
-
 app.post("/:folderPath*/save-cropped", (req, res) => {
   const { imageName, imageData } = req.body;
-  const folderName = req.params.folder;
   const folderPath = req.params.folderPath;
   const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
 
@@ -56,7 +52,6 @@ app.post("/:folderPath*/save-cropped", (req, res) => {
 });
 
 // Endpoint for saving the original image
-
 app.post("/:folderPath*/save-original", (req, res) => {
   const { imageName } = req.body;
   const imageData = req.files && req.files.imageData;
@@ -91,6 +86,7 @@ app.post("/:folderPath*/save-original", (req, res) => {
   });
 });
 
+// Endpoint for saving the csv file
 app.post("/:folderPath*/save-csv", (req, res) => {
   const {imageName, annotatedText, isNepali} = req.body;
   const folderName = req.params.folder;
