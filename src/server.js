@@ -5,22 +5,23 @@ const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
-const archiver = require('archiver');
+const archiver = require("archiver");
 
 dotenv.config();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
-app.use(fileUpload({
-  limits: {
-    fileSize: 10 * 1024 * 1024 //10MB
-  }
-}));
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 10 * 1024 * 1024, //10MB
+    },
+  })
+);
 
 //PORT
 const PORT = process.env.PORT || 3000;
-
 
 // Endpoint for saving cropped images
 app.post("/:folderPath*/save-cropped", (req, res) => {
@@ -51,14 +52,14 @@ app.post("/:folderPath*/save-original", (req, res) => {
   const { imageName } = req.body;
   const imageData = req.files && req.files.imageData;
   const folderPath = req.params.folderPath;
-  console.log(folderPath, "FOLDER PATH \n")
+  console.log(folderPath, "FOLDER PATH \n");
 
   if (!imageData) {
     res.status(400).send("No image file received");
     return;
   }
 
-  const imagePath = path.join(folderPath, "original",  imageName);
+  const imagePath = path.join(folderPath, "original", imageName);
 
   // Create the directory if it doesn't exist
   const directory = path.dirname(imagePath);
@@ -66,7 +67,7 @@ app.post("/:folderPath*/save-original", (req, res) => {
   imageData.mv(imagePath, (err) => {
     if (err) {
       console.error("Error saving the original image: ", err);
-      res.sendStatus(500) 
+      res.sendStatus(500);
     } else {
       console.log("Original image successfully saved: ", imagePath);
       res.sendStatus(200);
@@ -91,15 +92,14 @@ app.post("/:folderPath*/save-csv", (req, res) => {
   // Write content to the CSV file
   fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {
     if (err) {
-      console.error('Error writing to CSV file:', err);
+      console.error("Error writing to CSV file:", err);
       res.sendStatus(500);
       return;
     }
-    console.log('Data saved to CSV:', imageName);
+    console.log("Data saved to CSV:", imageName);
     res.sendStatus(200);
   });
 });
-
 
 // Endpoint for zipping files
 app.get("/:folderPath/zip-files", async (req, res) => {
@@ -124,7 +124,6 @@ app.get("/:folderPath/zip-files", async (req, res) => {
 
     // Add original image, cropped image, and CSV to the archive
     const originalImagePath = path.join(
-      __dirname,
       folderPath,
       "original",
       req.query.imageName
@@ -132,7 +131,6 @@ app.get("/:folderPath/zip-files", async (req, res) => {
     archive.file(originalImagePath, { name: "original.png" });
 
     const croppedImagePath = path.join(
-      __dirname,
       folderPath,
       "cropped",
       `cropped_${req.query.index}.png`
@@ -140,12 +138,16 @@ app.get("/:folderPath/zip-files", async (req, res) => {
     archive.file(croppedImagePath, { name: "cropped.png" });
 
     const csvPath = path.join(
-      __dirname,
       folderPath,
       "csv",
       `csv_${req.query.index}.csv`
     );
     archive.file(csvPath, { name: "data.csv" });
+
+    //DEBUG
+    console.log("Original Image Path: ", originalImagePath);
+    console.log("Cropped Image Path: ", croppedImagePath);
+    console.log("CSV Path: ", csvPath);
 
     // Finalize archive
     await archive.finalize();
@@ -159,25 +161,33 @@ app.get("/:folderPath/zip-files", async (req, res) => {
     console.log("Files zipped successfully");
 
     // Send the zip file as a response
-    res.download(zipFilePath, "files.zip", (err) => {
-      if (err) {
-        console.error("Error sending the zip file: ", err);
-        res.sendStatus(500);
-      }
-
-      // Remove the zip file after it has been sent
-      fs.unlink(zipFilePath, (err) => {
+    res.sendFile(
+      zipFilePath,
+      {
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Disposition": `attachment; filename="files.zip"`,
+        },
+      },
+      (err) => {
         if (err) {
-          console.error("Error removing the zip file: ", err);
+          console.error("Error sending the zip file: ", err);
+          res.sendStatus(500);
         }
-      });
-    });
+
+        // Remove the zip file after it has been sent
+        fs.unlink(zipFilePath, (err) => {
+          if (err) {
+            console.error("Error removing the zip file: ", err);
+          }
+        });
+      }
+    );
   } catch (error) {
     console.error("Error zipping files: ", error);
     res.sendStatus(500);
   }
 });
-
 
 app.listen(PORT, () => {
   console.log("Server started at port: ", PORT);

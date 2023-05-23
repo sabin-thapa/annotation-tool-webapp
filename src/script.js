@@ -23,6 +23,8 @@ let croppedImageName = "";
 //List of files in the folder
 let fileList = [];
 let currentIndex = 0;
+let folderPath = "";
+let folderName = "";
 
 let suggestions = [];
 let suggestedWord = "";
@@ -76,9 +78,9 @@ function showImage(index) {
     reader.readAsDataURL(file);
 
     //Get the folder name of the folder containing images
-    const folderPath = file.webkitRelativePath;
-    const folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
-    console.log(folderName, "folder name \n");
+    folderPath = file.webkitRelativePath;
+    folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
+    // console.log(folderName, "folder name \n");
 
     //Update imageName
     imageNameElement.innerHTML = folderPath;
@@ -166,13 +168,9 @@ saveBtn.addEventListener("click", async (e) => {
 
     console.log("Original image saved successfully!");
 
-    //Zip Endpoint
-    const folderPath = "zip";
-    const zipEndPoint = `${baseUrl}/${folderPath}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
-    saveCSVEndpoint = `${baseUrl}/${folderPath}/save-csv`;
+    //Zip
 
-
-
+    const zipEndPoint = `${baseUrl}/${folderName}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
     const zipResponse = await fetch(zipEndPoint);
 
     if (!zipResponse.ok) {
@@ -189,10 +187,9 @@ saveBtn.addEventListener("click", async (e) => {
     link.href = URL.createObjectURL(zipData);
     link.download = "files.zip";
 
-    link.click()
+    link.click();
 
     URL.revokeObjectURL(link.href);
-    
   } catch (error) {
     console.error("Error saving files:", error);
   }
