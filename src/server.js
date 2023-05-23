@@ -66,7 +66,7 @@ app.post("/:folderPath*/save-original", (req, res) => {
   imageData.mv(imagePath, (err) => {
     if (err) {
       console.error("Error saving the original image: ", err);
-      res.sendStatus(500).send("Server error saving the original image");
+      res.sendStatus(500) 
     } else {
       console.log("Original image successfully saved: ", imagePath);
       res.sendStatus(200);
@@ -102,58 +102,82 @@ app.post("/:folderPath*/save-csv", (req, res) => {
 
 
 // Endpoint for zipping files
-app.get("/:folderPath/zip-files", (req, res) => {
-  const folderPath = req.params.folderPath;
-  const zipPath = path.join(folderPath, "zipped");
-  const zipFilePath = path.join(zipPath, "files.zip");
+app.get("/:folderPath/zip-files", async (req, res) => {
+  try {
+    const folderPath = req.params.folderPath;
+    const zipPath = path.join(__dirname, folderPath, "zipped");
+    const zipFilePath = path.join(zipPath, "files.zip");
 
-  //Create a directory if it doesn't exist
-  fs.mkdirSync(zipPath, {recursive:true})
+    // Create a directory if it doesn't exist
+    await fs.promises.mkdir(zipPath, { recursive: true });
 
-  //Create a new archive file
-  const archive = archiver('zip', {
-    zlib: {level: 9} //compression level
-  })
+    // Create a new archive file
+    const archive = archiver("zip", {
+      zlib: { level: 9 }, // compression level
+    });
 
-  //Create write stream for the zip file
-  const output = fs.createWriteStream(zipFilePath);
+    // Create write stream for the zip file
+    const output = fs.createWriteStream(zipFilePath);
 
-  //Pipe archive data to the write stream
-  archive.pipe(output)
+    // Pipe archive data to the write stream
+    archive.pipe(output);
 
-  //Add original image, cropped iamge and csv to the archive
-  const originalImagePath = path.join(folderPath, "original", req.query.imageName)
-  archive.file(originalImagePath, {name: "original.png"});
+    // Add original image, cropped image, and CSV to the archive
+    const originalImagePath = path.join(
+      __dirname,
+      folderPath,
+      "original",
+      req.query.imageName
+    );
+    archive.file(originalImagePath, { name: "original.png" });
 
-  const croppedImagePath = path.join(folderPath, "cropped", `cropped_${req.query.index}.png`)
-  archive.file(croppedImagePath, {name: "cropped.png"})
+    const croppedImagePath = path.join(
+      __dirname,
+      folderPath,
+      "cropped",
+      `cropped_${req.query.index}.png`
+    );
+    archive.file(croppedImagePath, { name: "cropped.png" });
 
-  const csvPath = path.join(folderPath, "csv", `csv_${req.query.index}.csv`)
-  archive.file(csvPath, {name: "data.csv"})
+    const csvPath = path.join(
+      __dirname,
+      folderPath,
+      "csv",
+      `csv_${req.query.index}.csv`
+    );
+    archive.file(csvPath, { name: "data.csv" });
 
-  //Finalize archive
-  archive.finalize()
+    // Finalize archive
+    await archive.finalize();
 
-  //Wait for the archive to be created and sent it as a response
-  output.on('finish', () => {
-    console.log('Files zipped successfully');
+    // Wait for the archive to be fully created
+    await new Promise((resolve, reject) => {
+      output.on("close", resolve);
+      archive.on("error", reject);
+    });
 
-    res.download(zipFilePath, 'files.zip', err => {
-      if(err) {
-        console.error('Error sending the zip file: ',err);
-        res.sendStatus(500)
+    console.log("Files zipped successfully");
+
+    // Send the zip file as a response
+    res.download(zipFilePath, "files.zip", (err) => {
+      if (err) {
+        console.error("Error sending the zip file: ", err);
+        res.sendStatus(500);
       }
 
-      //Remove the zip file after it has been sent
-      fs.unlink(zipFilePath, err => {
-        if(err) {
-          console.error('Error removing the zip file: ', err)
+      // Remove the zip file after it has been sent
+      fs.unlink(zipFilePath, (err) => {
+        if (err) {
+          console.error("Error removing the zip file: ", err);
         }
-      })
-    })
-  })
+      });
+    });
+  } catch (error) {
+    console.error("Error zipping files: ", error);
+    res.sendStatus(500);
+  }
+});
 
-})
 
 app.listen(PORT, () => {
   console.log("Server started at port: ", PORT);

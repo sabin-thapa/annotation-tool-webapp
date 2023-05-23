@@ -91,7 +91,7 @@ function showImage(index) {
 }
 
 // After save button is pressed
-saveBtn.addEventListener("click", (e) => {
+saveBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
   const img = document.querySelector(".result img");
@@ -106,106 +106,98 @@ saveBtn.addEventListener("click", (e) => {
   const originalImageName = `backup_${currentIndex}.png`;
   const originalImageFile = fileList[currentIndex];
 
-  fetch(saveCroppedEndpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      imageName: croppedImageName,
-      imageData: croppedImageLink,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => {
-      if (res.ok) {
-        console.log("Cropped image saved successfully!");
+  try {
+    // Save to CSV
+    const csvImageName = `csv_${currentIndex}.csv`;
+    const annotatedText = inputTextField.value;
+    const isNepali = nepaliMode;
 
-        // Save original image
-        const formData = new FormData();
-        formData.append("imageName", originalImageName);
-        formData.append("imageData", originalImageFile);
-
-        fetch(saveOriginalEndpoint, {
-          method: "POST",
-          body: formData,
-        })
-          .then((res) => {
-            if (res.ok) {
-              console.log("Original image saved successfully!");
-
-              // SAVE TO CSV
-              //data
-              const imageName = `csv_${currentIndex}.csv`;
-              const annotatedText = inputTextField.value;
-              const isNepali = nepaliMode;
-
-              fetch(saveCSVEndpoint, {
-                method: "POST",
-                body: JSON.stringify({
-                  imageName,
-                  annotatedText,
-                  isNepali,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }).then((res) => {
-                if (res.ok) {
-                  console.log("Saved successfully to CSV");
-
-                  //ZIP FILES
-                  const folderPath = "zip";
-                  const zipEndPoint = `${baseUrl}/${folderPath}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
-                  fetch(zipEndPoint)
-                    .then((res) => {
-                      if (res.ok) {
-                        console.log("Files zipped successfully!");
-                        return res.blob();
-                      } else {
-                        console.error("Error zipping file: ", res.status);
-                        throw new Error("Failed to zip files.");
-                      }
-                    })
-                    .then((blob) => {
-                      if (blob) {
-                        //Create a temp link to download
-                        const link = document.createElement("a");
-                        link.href = URL.createObjectURL(blob);
-                        link.download = "files.zip";
-
-                        link.click();
-
-                        URL.revokeObjectURL(link.href);
-                      } else {
-                        throw new Error("Empty zip file.");
-                      }
-                    })
-                    .catch((err) => {
-                      console.error("Error zipping files: ", err);
-                    });
-                }
-              });
-            } else {
-              console.error("Failed to save original image!");
-            }
-            return res.text();
-          })
-          .then((data) => {
-            console.log(data, "Save original image response");
-          })
-
-          .catch((err) => {
-            console.error("Error saving original image: ", err);
-          });
-      } else {
-        console.error("Failed to save cropped image!");
-      }
-    })
-    .catch((err) => {
-      console.error("Error saving cropped image: ", err);
+    const csvResponse = await fetch(saveCSVEndpoint, {
+      method: "POST",
+      body: JSON.stringify({
+        imageName: csvImageName,
+        annotatedText,
+        isNepali,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
-  console.log("saved");
+    if (!csvResponse.ok) {
+      throw new Error("Failed to save CSV file!");
+    }
+
+    console.log("Saved successfully to CSV");
+
+    e.preventDefault();
+
+    // Save cropped image
+    const croppedResponse = await fetch(saveCroppedEndpoint, {
+      method: "POST",
+      body: JSON.stringify({
+        imageName: croppedImageName,
+        imageData: croppedImageLink,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!croppedResponse.ok) {
+      throw new Error("Failed to save cropped image!");
+    }
+
+    console.log("Cropped image saved successfully!");
+
+    // Save original image
+    const originalFormData = new FormData();
+    originalFormData.append("imageName", originalImageName);
+    originalFormData.append("imageData", originalImageFile);
+
+    const originalResponse = await fetch(saveOriginalEndpoint, {
+      method: "POST",
+      body: originalFormData,
+    });
+
+    if (!originalResponse.ok) {
+      throw new Error("Failed to save original image!");
+    }
+
+    console.log("Original image saved successfully!");
+
+    const zipResponse = await fetch(zipEndpoint);
+
+    if (!zipResponse.ok) {
+      throw new Error("Error zipping files!");
+    }
+
+    const zipData = await zipResponse.blob();
+
+    if (zipData.size === 0) {
+      throw new Error("Empty zip file!");
+    }
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(zipData);
+    link.download = "files.zip";
+
+    link.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      })
+    );
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
+  } catch (error) {
+    console.error("Error saving files:", error);
+  }
+
+  console.log("Saved");
 });
 
 // Iterate through the images in the folder
