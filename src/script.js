@@ -166,7 +166,14 @@ saveBtn.addEventListener("click", async (e) => {
 
     console.log("Original image saved successfully!");
 
-    const zipResponse = await fetch(zipEndpoint);
+    //Zip Endpoint
+    const folderPath = "zip";
+    const zipEndPoint = `${baseUrl}/${folderPath}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
+    saveCSVEndpoint = `${baseUrl}/${folderPath}/save-csv`;
+
+
+
+    const zipResponse = await fetch(zipEndPoint);
 
     if (!zipResponse.ok) {
       throw new Error("Error zipping files!");
@@ -182,17 +189,10 @@ saveBtn.addEventListener("click", async (e) => {
     link.href = URL.createObjectURL(zipData);
     link.download = "files.zip";
 
-    link.dispatchEvent(
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      })
-    );
-
-    document.body.removeChild(link);
+    link.click()
 
     URL.revokeObjectURL(link.href);
+    
   } catch (error) {
     console.error("Error saving files:", error);
   }
