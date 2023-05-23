@@ -113,7 +113,7 @@ app.get("/:folderPath/zip-files", async (req, res) => {
 
     // Create a new archive file
     const archive = archiver("zip", {
-      zlib: { level: 9 }, // compression level
+      zlib: { level:5 }, // compression level
     });
 
     // Create write stream for the zip file

@@ -170,7 +170,7 @@ saveBtn.addEventListener("click", async (e) => {
 
     //Zip
 
-    const zipEndPoint = `${baseUrl}/${folderName}/zip-files?imageName=${croppedImageName}&index=${currentIndex}`;
+    const zipEndPoint = `${baseUrl}/${folderName}/zip-files?imageName=${originalImageName}&index=${currentIndex}`;
     const zipResponse = await fetch(zipEndPoint);
 
     if (!zipResponse.ok) {
