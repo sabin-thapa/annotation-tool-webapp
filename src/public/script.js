@@ -7,7 +7,7 @@ const addFolderElement = document.querySelector("#add-folder");
 const imageNameElement = document.querySelector("#image-name");
 
 const saveBtn = document.querySelector("#saveButton");
-const downloadBtn = document.querySelector(".download");
+const downloadBtn = document.querySelector("#downloadButton");
 const nextBtn = document.querySelector("#next-btn");
 const prevBtn = document.querySelector("#prev-btn");
 
@@ -89,6 +89,9 @@ function showImage(index) {
     saveCroppedEndpoint = `${baseUrl}/${folderPath}/save-cropped`;
     saveOriginalEndpoint = `${baseUrl}/${folderPath}/save-original`;
     saveCSVEndpoint = `${baseUrl}/${folderPath}/save-csv`;
+    generateZipEndpoint = `${baseUrl}/${encodeURIComponent(
+      folderName
+    )}/save-zip`;
   }
 }
 
@@ -167,33 +170,59 @@ saveBtn.addEventListener("click", async (e) => {
       }
 
       console.log("Original image saved successfully!");
+      //Show next image when saved
+      showNextImage();
     };
 
     reader.readAsDataURL(file);
+
+    console.log("Saved");
   } catch (error) {
     console.error("Error saving files:", error);
   }
-
-  //Show next image when saved
-  currentIndex = (currentIndex + 1) % fileList.length;
-  showImage(currentIndex);
-  //Reset textarea
-  inputTextField.value = "";
-  console.log("Saved");
 });
-
 
 // Iterate through the images in the folder
 nextBtn.addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % fileList.length;
-  inputTextField.value = ""
-  showImage(currentIndex);
+  showNextImage();
 });
+
+function showNextImage() {
+  currentIndex = (currentIndex + 1) % fileList.length;
+  inputTextField.value = "";
+  showImage(currentIndex);
+}
 
 prevBtn.addEventListener("click", () => {
   currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
-  inputTextField.value = ""
+  inputTextField.value = "";
   showImage(currentIndex);
+});
+
+// Download Zip Button
+
+downloadBtn.addEventListener("click", () => {
+  fetch(generateZipEndpoint)
+    .then((res) => {
+      if (res.ok) {
+        return res.blob();
+      } else {
+        throw new Error("Error generating the zip file --client");
+      }
+    })
+    .then((blob) => {
+      //Create a temp link to download the zip
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "files.zip";
+
+      link.click();
+
+      URL.revokeObjectURL(link.href);
+    })
+    .catch((err) => {
+      console.error("Error: ", err);
+    });
 });
 
 // <! -- Annotation Part -- !>

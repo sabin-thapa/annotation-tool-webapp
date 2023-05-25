@@ -112,6 +112,40 @@ app.post("/:folderPath*/save-csv", (req, res) => {
     res.sendStatus(200);
   });
 
+app.get("/:folderName*/save-zip", (req, res) => {
+  const folderName = req.params.folderName;
+  const zipFilePath = path.join(folderName, folderName + ".zip");
+
+  //Writable stream for the zip file
+  const output = fs.createWriteStream(zipFilePath);
+
+  //Create a new archiver instance
+  const archive = archiver("zip", {
+    zlib: { level: 5 }, //compression level
+  });
+
+  //Piping the archive data to the output stream
+  archive.pipe(output);
+
+  //Add the files to the archive
+  archive.directory(folderName, false);
+
+  //Finalize the archive
+  archive.finalize();
+
+  //Setting response headers
+  res.attachment(folderName + ".zip");
+
+  //Pipe the zip file to the response
+  archive.pipe(res)
+
+  // Error handling
+  archive.on("error", (err) => {
+    console.error("Error generating the zip-file:", err);
+    res.status(500).send("Error generating the zip-file");
+  });
+});
+
   // Write content to the CSV file
   // fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {
   //   if (err) {
