@@ -176,7 +176,9 @@ saveBtn.addEventListener("click", async (e) => {
 
   //Show next image when saved
   currentIndex = (currentIndex + 1) % fileList.length;
-  showImage(currentIndex)
+  showImage(currentIndex);
+  //Reset textarea
+  inputTextField.value = "";
   console.log("Saved");
 });
 
