@@ -236,77 +236,75 @@ function toggleNepaliMode(isNepaliMode) {
   console.log(nepaliMode, "Nepali Mode");
 }
 
-inputTextField.addEventListener("input", async (e) => {
+inputTextField.addEventListener("keyup", async (e) => {
   if (!nepaliMode) return;
-
+  
   const textValue = e.target.value;
   const selectionIndex = e.target.selectionStart;
-
-  //trim - Remove trailing or leading white spaces
-  //replace - Replace one or more consecutive white space characters with a single space
-  //split - split the resulting string into an array of substrings
-
+  
+  // Trim - Remove trailing or leading white spaces
+  // Replace - Replace one or more consecutive white space characters with a single space
+  // Split - Split the resulting string into an array of substrings
+  
   const wordList = textValue.trim().replace(/\s+/g, " ").split(" ");
-  // console.log(wordList, "wordlist");
-
+  
   if (wordList.length == 1 && wordList[0] == "") {
     return;
   }
-
+  
   let wordIndex = -1,
     charCount = 0;
-  console.log(selectionIndex, "selection index");
-
+    
   for (let i = 0; i < wordList.length; i++) {
     // Add 1 for space character
     charCount += wordList[i].length + 1;
-    console.log(wordList[i].length, charCount);
 
     if (charCount >= selectionIndex) {
-      wordIndex = i; //new word after white space
+      wordIndex = i; // New word after white space
       break;
     }
   }
-  console.log(wordIndex, "wordIndex");
-
+  
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
-
   const selectedWord = wordList[wordIndex];
-
-  fetch(
-    `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      suggestions = data[1][0][1];
-      suggestedWord = suggestions[0];
-      suggestionsElement.innerHTML = "";
-
-      suggestions.forEach((suggestion) => {
-        let suggestionBtn = document.createElement("button");
-        suggestionBtn.textContent = suggestion;
-        suggestionBtn.addEventListener("click", () => {
-          wordList[wordIndex] = suggestion;
+  
+  if (e.key === " ") { // Check if space bar is pressed
+    fetch(
+      `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        suggestions = data[1][0][1];
+        suggestedWord = suggestions[0];
+        suggestionsElement.innerHTML = "";
+        
+        suggestions.forEach((suggestion) => {
+          let suggestionBtn = document.createElement("button");
+          suggestionBtn.textContent = suggestion;
+          suggestionBtn.addEventListener("click", () => {
+            wordList[wordIndex] = suggestion;
+            const finalText = wordList.join(" ") + " ";
+            const selectedWordIndex =
+              finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
+            selectSuggestedWord(finalText, selectedWordIndex);
+            suggestionsElement.innerHTML = "";
+          });
+          suggestionsElement.appendChild(suggestionBtn);
+        });
+        
+        if (data == " " && value[selectionIndex] - 2 !== " ") {
+          console.log("Space pressed", suggestedWord);
+          wordList[wordIndex] = suggestedWord;
           const finalText = wordList.join(" ") + " ";
           const selectedWordIndex =
             finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
           selectSuggestedWord(finalText, selectedWordIndex);
           suggestionsElement.innerHTML = "";
-        });
-        suggestionsElement.appendChild(suggestionBtn);
+        }
       });
-
-      if (data == " " && value[selectionIndex] - 2 !== " ") {
-        console.log("Space pressed", suggestedWord);
-        wordList[wordIndex] = suggestedWord;
-        const finalText = wordList.join(" ") + " ";
-        const selectedWordIndex =
-          finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
-        selectSuggestedWord(finalText, selectedWordIndex);
-        suggestionsElement.innerHTML = "";
-      }
-    });
+  }
 });
+
 
 function selectSuggestedWord(text, index) {
   inputTextField.value = text;
