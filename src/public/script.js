@@ -96,100 +96,80 @@ function showImage(index) {
 saveBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
-  const img = document.querySelector(".result img");
-
-  // Get cropped area of the image
-  const croppedCanvas = cropper.getCroppedCanvas();
-
-  // Save cropped image
-  croppedImageName = `cropped_${currentIndex}.png`;
-  croppedImageLink = croppedCanvas.toDataURL("image/png");
-
-  const originalImageName = `backup_${currentIndex}.png`;
-  const originalImageFile = fileList[currentIndex];
-
   try {
-    // Save to CSV
-    const csvImageName = `csv_${currentIndex}.csv`;
-    const annotatedText = inputTextField.value;
-    const isNepali = nepaliMode;
+    const file = fileList[currentIndex];
 
-    const csvResponse = await fetch(saveCSVEndpoint, {
-      method: "POST",
-      body: JSON.stringify({
-        imageName: csvImageName,
-        annotatedText,
-        isNepali,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const img = document.createElement("img");
+    const reader = new FileReader();
 
-    if (!csvResponse.ok) {
-      throw new Error("Failed to save CSV file!");
-    }
+    reader.onload = async function (e) {
+      img.src = e.target.result;
 
-    console.log("Saved successfully to CSV");
+      const croppedCanvas = cropper.getCroppedCanvas(img);
+      const croppedImageLink = croppedCanvas.toDataURL("image/png");
+      const croppedImageName = `cropped_${currentIndex}.png`;
 
-    e.preventDefault();
+      const originalImageName = `backup_${currentIndex}.png`;
 
-    // Save cropped image
-    const croppedResponse = await fetch(saveCroppedEndpoint, {
-      method: "POST",
-      body: JSON.stringify({
-        imageName: croppedImageName,
-        imageData: croppedImageLink,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const csvImageName = `csv_${currentIndex}.csv`;
+      const annotatedText = inputTextField.value;
+      const isNepali = nepaliMode;
 
-    if (!croppedResponse.ok) {
-      throw new Error("Failed to save cropped image!");
-    }
+      // Save to CSV
+      const csvResponse = await fetch(saveCSVEndpoint, {
+        method: "POST",
+        body: JSON.stringify({
+          imageName: csvImageName,
+          annotatedText,
+          isNepali,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    console.log("Cropped image saved successfully!");
+      if (!csvResponse.ok) {
+        throw new Error("Failed to save CSV file!");
+      }
 
-    // Save original image
-    const originalFormData = new FormData();
-    originalFormData.append("imageName", originalImageName);
-    originalFormData.append("imageData", originalImageFile);
+      console.log("Saved successfully to CSV");
 
-    const originalResponse = await fetch(saveOriginalEndpoint, {
-      method: "POST",
-      body: originalFormData,
-    });
+      // Save cropped image
+      const croppedResponse = await fetch(saveCroppedEndpoint, {
+        method: "POST",
+        body: JSON.stringify({
+          imageName: croppedImageName,
+          imageData: croppedImageLink,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!originalResponse.ok) {
-      throw new Error("Failed to save original image!");
-    }
+      if (!croppedResponse.ok) {
+        throw new Error("Failed to save cropped image!");
+      }
 
-    console.log("Original image saved successfully!");
+      console.log("Cropped image saved successfully!");
 
-    //Zip
+      // Save original image
+      const originalFormData = new FormData();
+      originalFormData.append("imageName", originalImageName);
+      originalFormData.append("imageData", file);
 
-    const zipEndPoint = `${baseUrl}/${folderName}/zip-files?imageName=${originalImageName}&index=${currentIndex}`;
-    const zipResponse = await fetch(zipEndPoint);
+      const originalResponse = await fetch(saveOriginalEndpoint, {
+        method: "POST",
+        body: originalFormData,
+      });
 
-    if (!zipResponse.ok) {
-      throw new Error("Error zipping files!");
-    }
+      if (!originalResponse.ok) {
+        throw new Error("Failed to save original image!");
+      }
 
-    const zipData = await zipResponse.blob();
+      console.log("Original image saved successfully!");
+    };
 
-    if (zipData.size === 0) {
-      throw new Error("Empty zip file!");
-    }
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(zipData);
-    link.download = "files.zip";
-
-    link.click();
-
-    URL.revokeObjectURL(link.href);
+    reader.readAsDataURL(file);
   } catch (error) {
     console.error("Error saving files:", error);
   }
@@ -197,14 +177,17 @@ saveBtn.addEventListener("click", async (e) => {
   console.log("Saved");
 });
 
+
 // Iterate through the images in the folder
 nextBtn.addEventListener("click", () => {
   currentIndex = (currentIndex + 1) % fileList.length;
+  inputTextField.value = ""
   showImage(currentIndex);
 });
 
 prevBtn.addEventListener("click", () => {
   currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
+  inputTextField.value = ""
   showImage(currentIndex);
 });
 
