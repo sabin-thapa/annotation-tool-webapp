@@ -9,7 +9,12 @@ const archiver = require("archiver");
 
 dotenv.config();
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname,'public')));
+
+//Set ejs as template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'))
+
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
@@ -24,6 +29,12 @@ app.use(
 
 //PORT
 const PORT = process.env.PORT || 3000;
+
+
+// Home Enddpoint
+app.get("/", (req, res) => {
+  res.render("index") //render index.ejs from views folder
+})
 
 // Endpoint for saving cropped images
 app.post("/:folderPath*/save-cropped", (req, res) => {
@@ -192,5 +203,5 @@ app.get("/:folderPath/zip-files", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server started at port: ", PORT);
+  console.log(`⚡️ Server is running at http://localhost:${PORT}`);
 });
