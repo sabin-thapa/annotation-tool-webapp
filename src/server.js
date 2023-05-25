@@ -91,17 +91,18 @@ app.post("/:folderPath*/save-csv", (req, res) => {
   const { imageName, annotatedText, isNepali } = req.body;
   const folderPath = req.params.folderPath;
 
-  const csvPath = path.join(folderPath, "csv", imageName);
+  const csvPath = path.join(folderPath, "csv", "data.csv");
 
   // Create the directory structure if it doesn't exist
   const directory = path.dirname(csvPath);
   fs.mkdirSync(directory, { recursive: true });
 
   // Create CSV content - Headers and Data
-  const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
+  // const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
+  const csvRow = `"${imageName}","${annotatedText}","${isNepali}"\n`;
 
-  // Write content to the CSV file
-  fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {
+  // Append content to the CSV file
+  fs.appendFile(csvPath, csvRow, { encoding: "utf8" }, (err) => {
     if (err) {
       console.error("Error writing to CSV file:", err);
       res.sendStatus(500);
@@ -110,6 +111,17 @@ app.post("/:folderPath*/save-csv", (req, res) => {
     console.log("Data saved to CSV:", imageName);
     res.sendStatus(200);
   });
+
+  // Write content to the CSV file
+  // fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {
+  //   if (err) {
+  //     console.error("Error writing to CSV file:", err);
+  //     res.sendStatus(500);
+  //     return;
+  //   }
+  //   console.log("Data saved to CSV:", imageName);
+  //   res.sendStatus(200);
+  // });
 });
 
 // // Endpoint for zipping files
