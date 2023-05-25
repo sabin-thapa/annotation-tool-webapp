@@ -98,8 +98,7 @@ app.post("/:folderPath*/save-csv", (req, res) => {
   fs.mkdirSync(directory, { recursive: true });
 
   // Create CSV content - Headers and Data
-  // const csvContent = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
-  const csvRow = `"${imageName}","${annotatedText}","${isNepali}"\n`;
+  const csvRow = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
 
   // Append content to the CSV file
   fs.appendFile(csvPath, csvRow, { encoding: "utf8" }, (err) => {
