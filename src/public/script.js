@@ -15,6 +15,13 @@ const toggleNepaliSwitchBtn = document.querySelector("#toggleNepaliSwitch"); //t
 const suggestionsElement = document.querySelector("#suggestions"); //suggestionDiv
 const inputTextField = document.querySelector("#transliterateTextarea"); //inputField
 
+//Special Characters
+const specialCharSelectionDiv = document.querySelector(".special-char-selection")
+const specialCharacters = document.querySelector("#special-characters");
+const selectSpecialCharacterBtn = document.querySelector(
+  "#select-special-character"
+);
+
 // Initialize required variables
 let cropper = "";
 let croppedImageLink = "";
@@ -229,32 +236,40 @@ downloadBtn.addEventListener("click", () => {
 
 toggleNepaliSwitchBtn.addEventListener("click", (e) => {
   toggleNepaliMode(e.target.checked);
+  if(nepaliMode) {
+
+  }
 });
 
 function toggleNepaliMode(isNepaliMode) {
   nepaliMode = isNepaliMode;
   console.log(nepaliMode, "Nepali Mode");
+  if(nepaliMode) {
+    specialCharSelectionDiv.classList.remove('hide')
+  } else {
+    specialCharSelectionDiv.classList.add('hide')
+  }
 }
 
 inputTextField.addEventListener("keyup", async (e) => {
   if (!nepaliMode) return;
-  
+
   const textValue = e.target.value;
   const selectionIndex = e.target.selectionStart;
-  
+
   // Trim - Remove trailing or leading white spaces
   // Replace - Replace one or more consecutive white space characters with a single space
   // Split - Split the resulting string into an array of substrings
-  
+
   const wordList = textValue.trim().replace(/\s+/g, " ").split(" ");
-  
+
   if (wordList.length == 1 && wordList[0] == "") {
     return;
   }
-  
+
   let wordIndex = -1,
     charCount = 0;
-    
+
   for (let i = 0; i < wordList.length; i++) {
     // Add 1 for space character
     charCount += wordList[i].length + 1;
@@ -264,11 +279,12 @@ inputTextField.addEventListener("keyup", async (e) => {
       break;
     }
   }
-  
+
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
   const selectedWord = wordList[wordIndex];
-  
-  if (e.key === " ") { // Check if space bar is pressed
+
+  if (e.key === " ") {
+    // Check if space bar is pressed
     fetch(
       `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
     )
@@ -277,7 +293,7 @@ inputTextField.addEventListener("keyup", async (e) => {
         suggestions = data[1][0][1];
         suggestedWord = suggestions[0];
         suggestionsElement.innerHTML = "";
-        
+
         suggestions.forEach((suggestion) => {
           let suggestionBtn = document.createElement("button");
           suggestionBtn.textContent = suggestion;
@@ -291,7 +307,7 @@ inputTextField.addEventListener("keyup", async (e) => {
           });
           suggestionsElement.appendChild(suggestionBtn);
         });
-        
+
         if (data == " " && value[selectionIndex] - 2 !== " ") {
           console.log("Space pressed", suggestedWord);
           wordList[wordIndex] = suggestedWord;
@@ -305,12 +321,44 @@ inputTextField.addEventListener("keyup", async (e) => {
   }
 });
 
-
 function selectSuggestedWord(text, index) {
   inputTextField.value = text;
   suggestionsElement.innerHTML = "";
   inputTextField.focus();
   inputTextField.setSelectionRange(index, index);
+}
+
+// Special Characters
+
+selectSpecialCharacterBtn.addEventListener("click", () => {
+  selectSpecialCharacter()
+    .catch(err => {
+      console.error(err)
+    })
+});
+
+function selectSpecialCharacter() {
+  return new Promise((resolve, reject) => {
+    const selectedOption =
+      specialCharacters.options[specialCharacters.selectedIndex].value;
+    console.log("selected", selectedOption);
+  
+    const textValue = inputTextField.value;
+    const selectionStart = inputTextField.selectionStart;
+    const selectionEnd = inputTextField.selectionEnd;
+  
+    const beforeSelection = textValue.slice(0, selectionStart);
+    const afterSelection = textValue.slice(selectionEnd);
+  
+    const finalText = beforeSelection + selectedOption + afterSelection;
+  
+  
+    inputTextField.value = finalText;
+    inputTextField.focus();
+    inputTextField.setSelectionRange(selectionStart + selectedOption.length, selectionStart + selectedOption.length);
+
+    resolve();
+  })
 }
 
 // Need to save image name, annotated text and isNepali to a csv file

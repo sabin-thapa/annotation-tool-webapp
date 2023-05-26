@@ -10,9 +10,9 @@
   <!-- Normalize CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
   <!-- Cropper CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" />
+  <link rel="stylesheet" href="/cropper.min.css" />
   <!-- Cropper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+  <script src="cropper.min.js"></script>
   <script src="/script.js" defer></script>
   <title>Annotation Tool</title>
   <div class="topnav">
@@ -74,6 +74,31 @@
           <p class="help-text">
             Note : Press spacebar after typing a word for Nepali translation. Make sure that Nepali translation is toggled on.
           </p>
+
+          <div class="special-char-selection hide">
+            <select id="special-characters">
+              <option value="अं">अं</option>
+              <option value="अः">अः</option>
+              <option value="ॠ">ॠ</option>
+              <option value="ऋ">ऋ</option>
+              <option value="ण ">ण</option>
+              <option value="द्य">द्य</option>
+              <option value="त्त">त्त</option>
+              <option value="द्ध">द्ध</option>
+              <option value="ज्ञ">ज्ञ</option>
+              <option value="ष्ट">ष्ट</option>
+              <option value="ष्ठ">ष्ठ</option>
+              <option value="द्व">द्व</option>
+              <option value="न्न">न्न</option>
+              <option value="श्र">श्र</option>
+              <option value="ह्न">ह्न</option>
+              <option value="ह्म">ह्म</option>
+              <option value="क्ष">क्ष</option>
+              <option value="त्र">त्र</option>
+              <option value="ज्ञ">ज्ञ</option>
+            </select>
+            <button id="select-special-character">Select</button>
+          </div>
 
         </div>
       </div>
