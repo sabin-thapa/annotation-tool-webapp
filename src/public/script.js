@@ -79,7 +79,9 @@ function showImage(index) {
         saveBtn.classList.remove("hide");
 
         //CROPPER
-        cropper = new Cropper(img);
+        cropper = new Cropper(img, {
+          autoCropArea: 1
+        });
       }
     });
     reader.readAsDataURL(file);
