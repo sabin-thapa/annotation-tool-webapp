@@ -16,6 +16,7 @@ const suggestionsElement = document.querySelector("#suggestions"); //suggestionD
 const inputTextField = document.querySelector("#transliterateTextarea"); //inputField
 
 //Special Characters
+const specialCharSelectionDiv = document.querySelector(".special-char-selection")
 const specialCharacters = document.querySelector("#special-characters");
 const selectSpecialCharacterBtn = document.querySelector(
   "#select-special-character"
@@ -235,11 +236,19 @@ downloadBtn.addEventListener("click", () => {
 
 toggleNepaliSwitchBtn.addEventListener("click", (e) => {
   toggleNepaliMode(e.target.checked);
+  if(nepaliMode) {
+
+  }
 });
 
 function toggleNepaliMode(isNepaliMode) {
   nepaliMode = isNepaliMode;
   console.log(nepaliMode, "Nepali Mode");
+  if(nepaliMode) {
+    specialCharSelectionDiv.classList.remove('hide')
+  } else {
+    specialCharSelectionDiv.classList.add('hide')
+  }
 }
 
 inputTextField.addEventListener("keyup", async (e) => {
