@@ -114,7 +114,11 @@ app.post("/:folderPath*/save-csv", (req, res) => {
 
 app.get("/:folderName*/save-zip", (req, res) => {
   const folderName = req.params.folderName;
-  const zipFilePath = path.join(folderName, folderName + ".zip");
+
+  const directory = 'zipped';
+  fs.mkdirSync(directory, {recursive: true})
+
+  const zipFilePath = path.join(directory, folderName + ".zip");
 
   //Writable stream for the zip file
   const output = fs.createWriteStream(zipFilePath);
