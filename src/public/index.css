@@ -1,7 +1,5 @@
 * {
   background-color: #ffffff;
-
-
 }
 
 body {
@@ -15,7 +13,9 @@ body {
 
 .topnav {
   overflow: hidden;
-  background: radial-gradient(48.69% 20933.5% at 48.69% 50%, rgba(171, 175, 176, 0) 0%, #6aa2ba 83.97%);
+  background: radial-gradient(48.69% 20933.5% at 48.69% 50%,
+      rgba(171, 175, 176, 0) 0%,
+      #6aa2ba 83.97%);
   width: 100%;
   height: 15px;
   box-shadow: 1px 5 px rgba(171, 175, 176, 0);
@@ -32,6 +32,8 @@ body {
   margin: 5px auto;
   border-radius: 10%;
   padding: none;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .sub-container {
@@ -39,8 +41,6 @@ body {
   padding: 1rem;
   /* margin-top: -19%; */
 }
-
-
 
 form {
   margin: 20px;
@@ -54,7 +54,7 @@ textarea {
   margin: 0%;
   padding: 10px;
   font-size: 16px;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 4px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .box-2 {
@@ -68,16 +68,13 @@ textarea {
   background-image: url("https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?w=1380&t=st=1684471756~exp=1684472356~hmac=50962e9f62fde873d62ae32d5cfb245cf5b0c6331ad29f9c3c0ee17ffa995314");
   background-size: 100%;
   background-position: inherit;
-  box-shadow: 2px 2px 2px 2px rgba(1, 0, 0, 0.3);
+  box-shadow: 3px 2px 5px 4px rgba(1, 0, 0, 0.3);
   margin: auto;
   margin-top: 1.2%;
 }
 
-
-
-
 .result {
-  height: 500px;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -85,7 +82,6 @@ textarea {
   margin: auto;
   background: none;
 }
-
 
 .result img {
   height: 20px;
@@ -114,8 +110,6 @@ textarea:focus {
   box-shadow: 0 0 0 2px #357ae8;
 }
 
-
-
 #suggestions {
   margin: 6px 0;
   display: flex;
@@ -139,7 +133,6 @@ textarea:focus {
   background-color: #ddd;
 }
 
-/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -148,14 +141,12 @@ textarea:focus {
   margin: 4px 10px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -186,7 +177,6 @@ input:checked+.slider:before {
   transform: translateX(30px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -204,6 +194,7 @@ input:checked+.slider:before {
   margin-bottom: 1%;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .lang-toggle-left {
@@ -214,10 +205,8 @@ input:checked+.slider:before {
 .lang-title {
   font-size: 18px;
   font-weight: bold;
-  color: #5F5F5F;
+  color: #5f5f5f;
 }
-
-
 
 .btn {
   background-color: red;
@@ -244,20 +233,18 @@ figcaption {
   display: none !important;
 }
 
-
 #add-folder {
   cursor: pointer;
   position: relative;
   height: 100px;
 }
 
-
 button {
   margin: 5px;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   padding: 15px;
 }
@@ -268,20 +255,20 @@ button:hover {
   transform: translateY(-0.2em);
 }
 
-
 .button-47 {
   align-items: center;
   background: #6aa2ba;
-  border: 0 solid #E2E8F0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 0 solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffffff;
   display: inline-flex;
   font-family: Arial, sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  height: 45px;
-  width: 120px;
+  height: 40px;
+  width: 100px;
   justify-content: center;
   line-height: 24px;
   overflow-wrap: break-word;
@@ -292,24 +279,19 @@ button:hover {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin-right: 1rem;
+  margin-right: 10px;
   margin-top: 0%;
   margin-bottom: 1%;
 }
-/* 
-#saveButton {
-  margin-top: 0;
-  position: relative;
-  left: 60%;
-} */
+
+
 
 
 .help-text {
   color: #717171;
   font-size: smaller;
+  text-align: justify;
 }
-
-
 
 #prev-btn {
   font-size: small;
@@ -331,5 +313,56 @@ button:hover {
   padding: 6px;
   height: 32px;
   width: 80px;
+}
 
+@media (max-width: 768px) {
+
+  .lang-title,
+  .lang-toggle {
+    font-size: 0.95rem;
+    width: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .button-47 {
+    font-size: 0.7rem;
+    padding: 0.1rem;
+    height: 80%;
+    width: 120%;
+    margin: 1px;
+    float: inline-start;
+    margin-right: 10px;
+  }
+}
+
+.savendownload {
+  display: inline;
+  display: flex;
+}
+
+#downloadButton {
+  color: #2b444f;
+  background: none;
+  width: 55px;
+  height: 8px;
+  align-items: center;
+  border: 1px solid #466c7c;
+
+}
+
+#downloadButton:hover {
+  box-shadow: 5px #4e4f4e;
+
+}
+
+@media (max-width: 768px) {
+  #downloadButton {
+    font-size: 1rem;
+    padding: 1px;
+    height: 30px;
+    width: 100px;
+    margin-left: 1px;
+
+  }
 }
