@@ -72,7 +72,7 @@ function showImage(index) {
         saveBtn.classList.remove("hide");
 
         //CROPPER
-        cropper = new Cropper(img);
+        cropper = new Cropper(img, { aspectratio: 1 / 1 });
       }
     });
     reader.readAsDataURL(file);

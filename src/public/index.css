@@ -13,11 +13,9 @@ body {
 
 .topnav {
   overflow: hidden;
-  background: radial-gradient(
-    48.69% 20933.5% at 48.69% 50%,
-    rgba(171, 175, 176, 0) 0%,
-    #6aa2ba 83.97%
-  );
+  background: radial-gradient(48.69% 20933.5% at 48.69% 50%,
+      rgba(171, 175, 176, 0) 0%,
+      #6aa2ba 83.97%);
   width: 100%;
   height: 15px;
   box-shadow: 1px 5 px rgba(171, 175, 176, 0);
@@ -34,6 +32,8 @@ body {
   margin: 5px auto;
   border-radius: 10%;
   padding: none;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .sub-container {
@@ -74,7 +74,7 @@ textarea {
 }
 
 .result {
-  height: 500px;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -171,7 +171,7 @@ textarea:focus {
   transition: 0.4s;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(30px);
   -ms-transform: translateX(30px);
   transform: translateX(30px);
@@ -194,7 +194,9 @@ input:checked + .slider:before {
   margin-bottom: 1%;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
+
 .lang-toggle-left {
   display: flex;
   align-items: center;
@@ -263,10 +265,10 @@ button:hover {
   color: #ffffff;
   display: inline-flex;
   font-family: Arial, sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  height: 45px;
-  width: 120px;
+  height: 40px;
+  width: 100px;
   justify-content: center;
   line-height: 24px;
   overflow-wrap: break-word;
@@ -277,16 +279,13 @@ button:hover {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin-right: 1rem;
+  margin-right: 10px;
   margin-top: 0%;
   margin-bottom: 1%;
 }
-/* 
-#saveButton {
-  margin-top: 0;
-  position: relative;
-  left: 60%;
-} */
+
+
+
 
 .help-text {
   color: #717171;
@@ -315,11 +314,55 @@ button:hover {
   height: 32px;
   width: 80px;
 }
+
 @media (max-width: 768px) {
+
   .lang-title,
-  .lang-toggle,
+  .lang-toggle {
+    font-size: 0.95rem;
+    width: 50px;
+  }
+}
+
+@media (max-width: 768px) {
   .button-47 {
-    font-size: 0.9rem;
-    width: 90px;
+    font-size: 0.7rem;
+    padding: 0.1rem;
+    height: 80%;
+    width: 120%;
+    margin: 1px;
+    float: inline-start;
+    margin-right: 10px;
+  }
+}
+
+.savendownload {
+  display: inline;
+  display: flex;
+}
+
+#downloadButton {
+  color: #2b444f;
+  background: none;
+  width: 55px;
+  height: 8px;
+  align-items: center;
+  border: 1px solid #466c7c;
+
+}
+
+#downloadButton:hover {
+  box-shadow: 5px #4e4f4e;
+
+}
+
+@media (max-width: 768px) {
+  #downloadButton {
+    font-size: 1rem;
+    padding: 1px;
+    height: 30px;
+    width: 100px;
+    margin-left: 1px;
+
   }
 }
