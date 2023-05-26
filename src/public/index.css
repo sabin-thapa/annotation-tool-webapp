@@ -54,7 +54,7 @@ textarea {
   margin: 0%;
   padding: 10px;
   font-size: 16px;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 4px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .box-2 {
@@ -68,7 +68,7 @@ textarea {
   background-image: url("https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?w=1380&t=st=1684471756~exp=1684472356~hmac=50962e9f62fde873d62ae32d5cfb245cf5b0c6331ad29f9c3c0ee17ffa995314");
   background-size: 100%;
   background-position: inherit;
-  box-shadow: 2px 2px 2px 2px rgba(1, 0, 0, 0.3);
+  box-shadow: 3px 2px 5px 4px rgba(1, 0, 0, 0.3);
   margin: auto;
   margin-top: 1.2%;
 }
