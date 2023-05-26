@@ -238,23 +238,23 @@ function toggleNepaliMode(isNepaliMode) {
 
 inputTextField.addEventListener("keyup", async (e) => {
   if (!nepaliMode) return;
-
+  
   const textValue = e.target.value;
   const selectionIndex = e.target.selectionStart;
-
+  
   // Trim - Remove trailing or leading white spaces
   // Replace - Replace one or more consecutive white space characters with a single space
   // Split - Split the resulting string into an array of substrings
-
+  
   const wordList = textValue.trim().replace(/\s+/g, " ").split(" ");
-
+  
   if (wordList.length == 1 && wordList[0] == "") {
     return;
   }
-
+  
   let wordIndex = -1,
     charCount = 0;
-
+    
   for (let i = 0; i < wordList.length; i++) {
     // Add 1 for space character
     charCount += wordList[i].length + 1;
@@ -264,10 +264,10 @@ inputTextField.addEventListener("keyup", async (e) => {
       break;
     }
   }
-
+  
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
   const selectedWord = wordList[wordIndex];
-
+  
   if (e.key === " ") { // Check if space bar is pressed
     fetch(
       `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
@@ -277,7 +277,7 @@ inputTextField.addEventListener("keyup", async (e) => {
         suggestions = data[1][0][1];
         suggestedWord = suggestions[0];
         suggestionsElement.innerHTML = "";
-
+        
         suggestions.forEach((suggestion) => {
           let suggestionBtn = document.createElement("button");
           suggestionBtn.textContent = suggestion;
@@ -291,7 +291,7 @@ inputTextField.addEventListener("keyup", async (e) => {
           });
           suggestionsElement.appendChild(suggestionBtn);
         });
-
+        
         if (data == " " && value[selectionIndex] - 2 !== " ") {
           console.log("Space pressed", suggestedWord);
           wordList[wordIndex] = suggestedWord;
