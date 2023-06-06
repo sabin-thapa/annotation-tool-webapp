@@ -285,7 +285,6 @@ inputTextField.addEventListener("keyup", async (e) => {
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
   const selectedWord = wordList[wordIndex];
 
-  if (e.key === " ") {
     // Check if space bar is pressed
     fetch(
       `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
@@ -320,7 +319,6 @@ inputTextField.addEventListener("keyup", async (e) => {
           suggestionsElement.innerHTML = "";
         }
       });
-  }
 });
 
 function selectSuggestedWord(text, index) {
