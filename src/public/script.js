@@ -223,7 +223,7 @@ downloadBtn.addEventListener("click", () => {
       //Create a temp link to download the zip
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "files.zip";
+      link.download = `${folderName}.zip`;
 
       link.click();
 
