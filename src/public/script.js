@@ -32,6 +32,7 @@ let fileList = [];
 let currentIndex = 0;
 let folderPath = "";
 let folderName = "";
+let fileName = ""
 
 let suggestions = [];
 let suggestedWord = "";
@@ -89,7 +90,9 @@ function showImage(index) {
     //Get the folder name of the folder containing images
     folderPath = file.webkitRelativePath;
     folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
-    // console.log(folderName, "folder name \n");
+    console.log(folderPath, "folder path \n");
+    fileName = folderPath.split("/", 2)[1]
+    console.log(fileName, "file name \n");
 
     //Update imageName
     imageNameElement.innerHTML = folderPath;
@@ -119,9 +122,9 @@ saveBtn.addEventListener("click", async (e) => {
 
       const croppedCanvas = cropper.getCroppedCanvas(img);
       const croppedImageLink = croppedCanvas.toDataURL("image/png");
-      const croppedImageName = `cropped_${currentIndex}.png`;
+      const croppedImageName = `${fileName}`;
 
-      const originalImageName = `backup_${currentIndex}.png`;
+      const originalImageName = `${fileName}`;
 
       const csvImageName = `csv_${currentIndex}.csv`;
       const annotatedText = inputTextField.value;
