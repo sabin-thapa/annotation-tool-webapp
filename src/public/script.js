@@ -23,10 +23,16 @@ const selectSpecialCharacterBtn = document.querySelector(
   "#select-special-character"
 );
 
+//Invalid checkbox
+const invalidContainer = document.querySelector("#invalid-container");
+const invalidCheckbox = document.querySelector("#invalid-checkbox");
+let isInvalid = false;
+
 // Initialize required variables
 let cropper = "";
 let croppedImageLink = "";
 let croppedImageName = "";
+let originalImageName = "";
 
 //List of files in the folder
 let fileList = [];
@@ -52,12 +58,26 @@ fileInput.addEventListener("change", (e) => {
   showImage(0);
 });
 
+//Invalid checkbox updates
+invalidCheckbox.addEventListener("change", () => {
+  if (invalidCheckbox.checked) {
+    isInvalid = true;
+  } else {
+    isInvalid = false;
+  }
+});
+
 function showImage(index) {
   if (fileList.length) {
     addFolderElement.classList.add("hide");
     nextBtn.classList.remove("hide");
     prevBtn.classList.remove("hide");
+    downloadBtn.classList.remove("hide");
     imageNameElement.classList.remove("hide");
+    invalidContainer.classList.remove("hide");
+
+    invalidCheckbox.checked = false;
+    isInvalid = false;
 
     //First image
     const file = fileList[index];
@@ -120,7 +140,7 @@ async function saveData() {
       croppedImageLink = croppedCanvas.toDataURL("image/png");
       croppedImageName = fileName;
 
-      const originalImageName = fileName;
+      originalImageName = fileName;
 
       const annotatedText = inputTextField.value;
       const isNepali = nepaliMode;
@@ -132,6 +152,8 @@ async function saveData() {
           imageName: originalImageName,
           annotatedText,
           isNepali,
+          isInvalid,
+          folderName,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -184,8 +206,6 @@ async function saveData() {
       } else {
         showPreviousImage();
       }
-
-      showNextImage();
     };
 
     reader.readAsDataURL(file);
@@ -199,8 +219,8 @@ async function saveData() {
 // Iterate through the images in the folder
 nextBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  console.log(currentIndex, "next btn");
-  if (inputTextField.value !== "") {
+  console.log(isInvalid, "is invalid");
+  if (inputTextField.value !== "" || isInvalid === true) {
     await saveData();
   } else {
     showNextImage();
@@ -209,7 +229,7 @@ nextBtn.addEventListener("click", async (e) => {
 
 prevBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  if (inputTextField.value !== "") {
+  if (inputTextField.value !== "" || isInvalid === true) {
     await saveData();
   } else {
     showPreviousImage();

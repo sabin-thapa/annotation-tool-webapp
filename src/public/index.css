@@ -128,14 +128,12 @@ textarea:focus {
 .suggestion:hover {
   background-color: #ddd;
 }
-.special-char-selection{
-  position: absolute; 
-}
+
 #special-characters{
   height: 40px;
   width: 130px;
   border: none;
-  box-shadow: 3px 2px 3px 3px rgba(1, 0, 0, 0.3);
+  box-shadow: 1px 1px 1px 1px rgba(1, 0, 0, 0.3);
   text-align: center;
   background-color: #eee;
   font-size: 0.9rem;
@@ -389,4 +387,31 @@ button:hover {
     margin-left: 1px;
 
   }
+}
+
+.one-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.invalid {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.invalid-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 }
