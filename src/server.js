@@ -6,7 +6,6 @@ const path = require("path");
 const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
 const archiver = require("archiver");
-const rimraf = require("rimraf");
 
 dotenv.config();
 
