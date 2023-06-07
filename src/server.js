@@ -88,18 +88,23 @@ app.post("/:folderPath*/save-original", (req, res) => {
 
 // Endpoint for saving the csv file
 app.post("/:folderPath*/save-csv", (req, res) => {
-  const { imageName, annotatedText, isNepali } = req.body;
+  const { imageName, annotatedText, isNepali, isInvalid, folderName } = req.body;
   const folderPath = req.params.folderPath;
 
-  const csvPath = path.join(folderPath, "csv", "data.csv");
+  const csvPath = path.join(folderPath, "csv", `${folderName}.csv`);
 
   // Create the directory structure if it doesn't exist
   const directory = path.dirname(csvPath);
   fs.mkdirSync(directory, { recursive: true });
 
+  // Check if the CSV file exists
+  const csvExists = fs.existsSync(csvPath);
+
   // Create CSV content - Headers and Data
   // const csvRow = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
-  const csvRow = `"${imageName}","${annotatedText}","${isNepali}"\n`;
+  const csvRow = `${
+    csvExists ? "" : "Image,Text,Is Nepali, Invalid\n"
+  }"${imageName}","${annotatedText}","${isNepali}", "${isInvalid}"\n`;
 
   // Append content to the CSV file
   fs.appendFile(csvPath, csvRow, { encoding: "utf8" }, (err) => {
@@ -112,43 +117,43 @@ app.post("/:folderPath*/save-csv", (req, res) => {
     res.sendStatus(200);
   });
 
-app.get("/:folderName*/save-zip", (req, res) => {
-  const folderName = req.params.folderName;
+  app.get("/:folderName*/save-zip", (req, res) => {
+    const folderName = req.params.folderName;
 
-  const directory = 'zipped';
-  fs.mkdirSync(directory, {recursive: true})
+    const directory = "zipped";
+    fs.mkdirSync(directory, { recursive: true });
 
-  const zipFilePath = path.join(directory, folderName + ".zip");
+    const zipFilePath = path.join(directory, folderName + ".zip");
 
-  //Writable stream for the zip file
-  const output = fs.createWriteStream(zipFilePath);
+    //Writable stream for the zip file
+    const output = fs.createWriteStream(zipFilePath);
 
-  //Create a new archiver instance
-  const archive = archiver("zip", {
-    zlib: { level: 5 }, //compression level
+    //Create a new archiver instance
+    const archive = archiver("zip", {
+      zlib: { level: 5 }, //compression level
+    });
+
+    //Piping the archive data to the output stream
+    archive.pipe(output);
+
+    //Add the files to the archive
+    archive.directory(folderName, false);
+
+    //Finalize the archive
+    archive.finalize();
+
+    //Setting response headers
+    res.attachment(folderName + ".zip");
+
+    //Pipe the zip file to the response
+    archive.pipe(res);
+
+    // Error handling
+    archive.on("error", (err) => {
+      console.error("Error generating the zip-file:", err);
+      res.status(500).send("Error generating the zip-file");
+    });
   });
-
-  //Piping the archive data to the output stream
-  archive.pipe(output);
-
-  //Add the files to the archive
-  archive.directory(folderName, false);
-
-  //Finalize the archive
-  archive.finalize();
-
-  //Setting response headers
-  res.attachment(folderName + ".zip");
-
-  //Pipe the zip file to the response
-  archive.pipe(res)
-
-  // Error handling
-  archive.on("error", (err) => {
-    console.error("Error generating the zip-file:", err);
-    res.status(500).send("Error generating the zip-file");
-  });
-});
 
   // Write content to the CSV file
   // fs.writeFile(csvPath, csvContent, { encoding: "utf8" }, (err) => {

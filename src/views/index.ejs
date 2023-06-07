@@ -38,16 +38,19 @@
         </div>
       </div>
       <p class="hide name_of_image" id="image-name"></p>
-      <div class="buttons">
-        <button class="hide button-47" id="prev-btn">Previous</button>
-        <button class="hide button-47" id="next-btn">Next</button>
+      <div class="one-line">
+        <div class="buttons">
+          <button class="hide button-47" id="prev-btn">Previous</button>
+          <button class="hide button-47" id="next-btn">Next</button>
+        </div>
+        <div class="hide invalid-checkbox" id="invalid-container">
+          <input type="checkbox" id="invalid-checkbox" class="invalid" name="Invalid" value="Invalid" />
+          <label for="invalid-checkbox" class="checkbox-label"> Invalid Image</label>
+        </div>
+        
       </div>
 
       <div id="imageViewer">
-        <div>
-          <img id="image" src="" />
-          <span id="imageCaption"></span>
-        </div>
         <div class="lang-toggle">
           <div class="lang-toggle-left">
             <span class="lang-title">English</span>
@@ -57,13 +60,7 @@
             </label>
             <span class="lang-title">Nepali</span>
           </div>
-          <div class="savendownload">
-            <button id="downloadButton" class="button-47 save"><svg id="downloadIcon" xmlns="http://www.w3.org/2000/svg"
-                width="16" height="16" fill="currentColor" class="bi bi-cloud-download-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.5a.5.5 0 0 1 1 0V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0zm-.354 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V11h-1v3.293l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
-              </svg></button>
-          </div>
+
         </div>
 
         <div id="lowcontainer">
@@ -74,7 +71,8 @@
             Note : Press spacebar after typing a word for Nepali translation. Make sure that Nepali translation is toggled on.
           </p>
 
-          <div class="special-char-selection hide">
+          <div class="footer-container">
+          <div class="hide special-char-selection ">
            
             <select id="special-characters" >
               <option value="" disabled selected>नेपाली यूनिकोड</option>
@@ -101,7 +99,14 @@
             </select>
             <button id="select-special-character">Select</button>
           </div>
-
+          <div class="savendownload ">
+            <button id="downloadButton" class="button-47 save hide"><svg id="downloadIcon" xmlns="http://www.w3.org/2000/svg"
+                width="16" height="16" fill="currentColor" class="bi bi-cloud-download-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.5a.5.5 0 0 1 1 0V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0zm-.354 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V11h-1v3.293l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
+              </svg></button>
+          </div>
+        </div>
         </div>
       </div>
     </div>
