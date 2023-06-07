@@ -6,7 +6,6 @@ const imageWidth = document.querySelector(".img-w");
 const addFolderElement = document.querySelector("#add-folder");
 const imageNameElement = document.querySelector("#image-name");
 
-const saveBtn = document.querySelector("#saveButton");
 const downloadBtn = document.querySelector("#downloadButton");
 const nextBtn = document.querySelector("#next-btn");
 const prevBtn = document.querySelector("#prev-btn");
@@ -16,7 +15,9 @@ const suggestionsElement = document.querySelector("#suggestions"); //suggestionD
 const inputTextField = document.querySelector("#transliterateTextarea"); //inputField
 
 //Special Characters
-const specialCharSelectionDiv = document.querySelector(".special-char-selection")
+const specialCharSelectionDiv = document.querySelector(
+  ".special-char-selection"
+);
 const specialCharacters = document.querySelector("#special-characters");
 const selectSpecialCharacterBtn = document.querySelector(
   "#select-special-character"
@@ -32,7 +33,7 @@ let fileList = [];
 let currentIndex = 0;
 let folderPath = "";
 let folderName = "";
-let fileName = ""
+let fileName = "";
 
 let suggestions = [];
 let suggestedWord = "";
@@ -76,12 +77,9 @@ function showImage(index) {
         //Append the new image
         uploadedImage.appendChild(img);
 
-        //display buttons
-        saveBtn.classList.remove("hide");
-
         //CROPPER
         cropper = new Cropper(img, {
-          autoCropArea: 1
+          autoCropArea: 1,
         });
       }
     });
@@ -91,7 +89,7 @@ function showImage(index) {
     folderPath = file.webkitRelativePath;
     folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
     console.log(folderPath, "folder path \n");
-    fileName = folderPath.split("/", 2)[1]
+    fileName = folderPath.split("/", 2)[1];
     console.log(fileName, "file name \n");
 
     //Update imageName
@@ -107,12 +105,10 @@ function showImage(index) {
   }
 }
 
-// After save button is pressed
-saveBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-
+async function saveData() {
   try {
     const file = fileList[currentIndex];
+    console.log(currentIndex, "curr index save data");
 
     const img = document.createElement("img");
     const reader = new FileReader();
@@ -121,12 +117,11 @@ saveBtn.addEventListener("click", async (e) => {
       img.src = e.target.result;
 
       const croppedCanvas = cropper.getCroppedCanvas(img);
-      const croppedImageLink = croppedCanvas.toDataURL("image/png");
-      const croppedImageName = `${fileName}`;
+      croppedImageLink = croppedCanvas.toDataURL("image/png");
+      croppedImageName = fileName;
 
-      const originalImageName = `${fileName}`;
+      const originalImageName = fileName;
 
-      const csvImageName = `csv_${currentIndex}.csv`;
       const annotatedText = inputTextField.value;
       const isNepali = nepaliMode;
 
@@ -134,7 +129,7 @@ saveBtn.addEventListener("click", async (e) => {
       const csvResponse = await fetch(saveCSVEndpoint, {
         method: "POST",
         body: JSON.stringify({
-          imageName: csvImageName,
+          imageName: originalImageName,
           annotatedText,
           isNepali,
         }),
@@ -182,7 +177,14 @@ saveBtn.addEventListener("click", async (e) => {
       }
 
       console.log("Original image saved successfully!");
-      //Show next image when saved
+      //Show next image or previoes when saved
+
+      if (e.target.id === "nextBtn") {
+        showNextImage();
+      } else {
+        showPreviousImage();
+      }
+
       showNextImage();
     };
 
@@ -192,11 +194,26 @@ saveBtn.addEventListener("click", async (e) => {
   } catch (error) {
     console.error("Error saving files:", error);
   }
-});
+}
 
 // Iterate through the images in the folder
-nextBtn.addEventListener("click", () => {
-  showNextImage();
+nextBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  console.log(currentIndex, "next btn");
+  if (inputTextField.value !== "") {
+    await saveData();
+  } else {
+    showNextImage();
+  }
+});
+
+prevBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (inputTextField.value !== "") {
+    await saveData();
+  } else {
+    showPreviousImage();
+  }
 });
 
 function showNextImage() {
@@ -205,11 +222,11 @@ function showNextImage() {
   showImage(currentIndex);
 }
 
-prevBtn.addEventListener("click", () => {
+function showPreviousImage() {
   currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
   inputTextField.value = "";
   showImage(currentIndex);
-});
+}
 
 // Download Zip Button
 
@@ -241,18 +258,17 @@ downloadBtn.addEventListener("click", () => {
 
 toggleNepaliSwitchBtn.addEventListener("click", (e) => {
   toggleNepaliMode(e.target.checked);
-  if(nepaliMode) {
-
+  if (nepaliMode) {
   }
 });
 
 function toggleNepaliMode(isNepaliMode) {
   nepaliMode = isNepaliMode;
   console.log(nepaliMode, "Nepali Mode");
-  if(nepaliMode) {
-    specialCharSelectionDiv.classList.remove('hide')
+  if (nepaliMode) {
+    specialCharSelectionDiv.classList.remove("hide");
   } else {
-    specialCharSelectionDiv.classList.add('hide')
+    specialCharSelectionDiv.classList.add("hide");
   }
 }
 
@@ -288,40 +304,40 @@ inputTextField.addEventListener("keyup", async (e) => {
   wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
   const selectedWord = wordList[wordIndex];
 
-    // Check if space bar is pressed
-    fetch(
-      `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        suggestions = data[1][0][1];
-        suggestedWord = suggestions[0];
-        suggestionsElement.innerHTML = "";
+  // Check if space bar is pressed
+  fetch(
+    `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      suggestions = data[1][0][1];
+      suggestedWord = suggestions[0];
+      suggestionsElement.innerHTML = "";
 
-        suggestions.forEach((suggestion) => {
-          let suggestionBtn = document.createElement("button");
-          suggestionBtn.textContent = suggestion;
-          suggestionBtn.addEventListener("click", () => {
-            wordList[wordIndex] = suggestion;
-            const finalText = wordList.join(" ") + " ";
-            const selectedWordIndex =
-              finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
-            selectSuggestedWord(finalText, selectedWordIndex);
-            suggestionsElement.innerHTML = "";
-          });
-          suggestionsElement.appendChild(suggestionBtn);
-        });
-
-        if (data == " " && value[selectionIndex] - 2 !== " ") {
-          console.log("Space pressed", suggestedWord);
-          wordList[wordIndex] = suggestedWord;
+      suggestions.forEach((suggestion) => {
+        let suggestionBtn = document.createElement("button");
+        suggestionBtn.textContent = suggestion;
+        suggestionBtn.addEventListener("click", () => {
+          wordList[wordIndex] = suggestion;
           const finalText = wordList.join(" ") + " ";
           const selectedWordIndex =
             finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
           selectSuggestedWord(finalText, selectedWordIndex);
           suggestionsElement.innerHTML = "";
-        }
+        });
+        suggestionsElement.appendChild(suggestionBtn);
       });
+
+      if (data == " " && value[selectionIndex] - 2 !== " ") {
+        console.log("Space pressed", suggestedWord);
+        wordList[wordIndex] = suggestedWord;
+        const finalText = wordList.join(" ") + " ";
+        const selectedWordIndex =
+          finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
+        selectSuggestedWord(finalText, selectedWordIndex);
+        suggestionsElement.innerHTML = "";
+      }
+    });
 });
 
 function selectSuggestedWord(text, index) {
@@ -334,10 +350,9 @@ function selectSuggestedWord(text, index) {
 // Special Characters
 
 selectSpecialCharacterBtn.addEventListener("click", () => {
-  selectSpecialCharacter()
-    .catch(err => {
-      console.error(err)
-    })
+  selectSpecialCharacter().catch((err) => {
+    console.error(err);
+  });
 });
 
 function selectSpecialCharacter() {
@@ -345,23 +360,25 @@ function selectSpecialCharacter() {
     const selectedOption =
       specialCharacters.options[specialCharacters.selectedIndex].value;
     console.log("selected", selectedOption);
-  
+
     const textValue = inputTextField.value;
     const selectionStart = inputTextField.selectionStart;
     const selectionEnd = inputTextField.selectionEnd;
-  
+
     const beforeSelection = textValue.slice(0, selectionStart);
     const afterSelection = textValue.slice(selectionEnd);
-  
+
     const finalText = beforeSelection + selectedOption + afterSelection;
-  
-  
+
     inputTextField.value = finalText;
     inputTextField.focus();
-    inputTextField.setSelectionRange(selectionStart + selectedOption.length, selectionStart + selectedOption.length);
+    inputTextField.setSelectionRange(
+      selectionStart + selectedOption.length,
+      selectionStart + selectedOption.length
+    );
 
     resolve();
-  })
+  });
 }
 
 // Need to save image name, annotated text and isNepali to a csv file
