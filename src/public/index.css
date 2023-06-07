@@ -1,4 +1,3 @@
-
 body {
   margin: 0;
   padding: 0;
@@ -10,9 +9,11 @@ body {
 
 .topnav {
   overflow: hidden;
-  background: radial-gradient(48.69% 20933.5% at 48.69% 50%,
-      rgba(171, 175, 176, 0) 0%,
-      #6aa2ba 83.97%);
+  background: radial-gradient(
+    48.69% 20933.5% at 48.69% 50%,
+    rgba(171, 175, 176, 0) 0%,
+    #6aa2ba 83.97%
+  );
   width: 100%;
   height: 15px;
   box-shadow: 1px 5 px rgba(171, 175, 176, 0);
@@ -129,31 +130,30 @@ textarea:focus {
   background-color: #ddd;
 }
 
-#special-characters{
+#special-characters {
   height: 40px;
-  width: 130px;
+  width: 40px;
   border: none;
   box-shadow: 1px 1px 1px 1px rgba(1, 0, 0, 0.3);
   text-align: center;
   background-color: #eee;
   font-size: 0.9rem;
 }
-#select-special-character{
+#select-special-character {
+  height: 45px;
   font-weight: bold;
-  margin-left: 10px;
+  margin: 10px;
   color: #5f5f5f;
-  
 }
-#select-special-character:hover{
- cursor: pointer;
- color: #fff;
-}
-
-#special-characters:hover{
- background-color:  #ffffff;
- cursor: pointer;
+#select-special-character:hover {
+  cursor: pointer;
+  color: #fff;
 }
 
+#special-characters:hover {
+  background-color: #ffffff;
+  cursor: pointer;
+}
 
 .switch {
   position: relative;
@@ -193,7 +193,7 @@ textarea:focus {
   transition: 0.4s;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(30px);
   -ms-transform: translateX(30px);
   transform: translateX(30px);
@@ -306,9 +306,6 @@ button:hover {
   margin-bottom: 1%;
 }
 
-
-
-
 .help-text {
   color: #717171;
   font-size: smaller;
@@ -338,7 +335,6 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-
   .lang-title,
   .lang-toggle {
     font-size: 0.95rem;
@@ -370,12 +366,10 @@ button:hover {
   height: 8px;
   align-items: center;
   border: 1px solid #466c7c;
-
 }
 
 #downloadButton:hover {
   box-shadow: 5px #4e4f4e;
-
 }
 
 @media (max-width: 768px) {
@@ -385,7 +379,6 @@ button:hover {
     height: 30px;
     width: 100px;
     margin-left: 1px;
-
   }
 }
 
@@ -414,4 +407,16 @@ button:hover {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    border: none;
+  }
 }
