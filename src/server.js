@@ -88,7 +88,8 @@ app.post("/:folderPath*/save-original", (req, res) => {
 
 // Endpoint for saving the csv file
 app.post("/:folderPath*/save-csv", (req, res) => {
-  const { imageName, annotatedText, isNepali, isInvalid, folderName } = req.body;
+  const { imageName, annotatedText, isNepali, isInvalid, folderName } =
+    req.body;
   const folderPath = req.params.folderPath;
 
   const csvPath = path.join(folderPath, "csv", `${folderName}.csv`);
@@ -152,6 +153,14 @@ app.post("/:folderPath*/save-csv", (req, res) => {
     archive.on("error", (err) => {
       console.error("Error generating the zip-file:", err);
       res.status(500).send("Error generating the zip-file");
+    });
+
+    // Delete the folder after the zip file has been created
+    archive.on("end", () => {
+      // Remove the directory recursively
+      fs.rmdirSync(folderName, { recursive: true });
+      fs.rmdirSync('zipped', { recursive: true });
+      console.log("Folder deleted successfully");
     });
   });
 
