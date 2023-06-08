@@ -23,6 +23,10 @@ const selectSpecialCharacterBtn = document.querySelector(
   "#select-special-character"
 );
 
+const specialCharButtons = document.querySelectorAll(
+  ".special-char-selection button"
+);
+
 //Invalid checkbox
 const invalidContainer = document.querySelector("#invalid-container");
 const invalidCheckbox = document.querySelector("#invalid-checkbox");
@@ -287,11 +291,12 @@ function toggleNepaliMode(isNepaliMode) {
   console.log(nepaliMode, "Nepali Mode");
   if (nepaliMode) {
     specialCharSelectionDiv.classList.remove("hide");
+    specialCharButtons.classList.remove("hide")
   } else {
     specialCharSelectionDiv.classList.add("hide");
+    specialCharButtons.classList.add("hide")
   }
 }
-
 inputTextField.addEventListener("keyup", async (e) => {
   if (!nepaliMode) return;
 
@@ -304,7 +309,7 @@ inputTextField.addEventListener("keyup", async (e) => {
 
   const wordList = textValue.trim().replace(/\s+/g, " ").split(" ");
 
-  if (wordList.length == 1 && wordList[0] == "") {
+  if (wordList.length === 1 && wordList[0] === "") {
     return;
   }
 
@@ -321,43 +326,48 @@ inputTextField.addEventListener("keyup", async (e) => {
     }
   }
 
-  wordIndex = wordIndex == -1 ? wordList.length - 1 : wordIndex;
+  wordIndex = wordIndex === -1 ? wordList.length - 1 : wordIndex;
   const selectedWord = wordList[wordIndex];
 
-  // Check if space bar is pressed
-  fetch(
-    `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      suggestions = data[1][0][1];
-      suggestedWord = suggestions[0];
-      suggestionsElement.innerHTML = "";
+  if (e.key === " ") {
+    suggestionsElement.innerHTML = ""; // Clear suggestions div
+  } else {
+    fetch(
+      `https://inputtools.google.com/request?text=${selectedWord}&itc=ne-t-i0-und&num=10&ie=utf-8&oe=utf-8`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        suggestions = data[1][0][1];
+        suggestedWord = suggestions[0];
+        suggestionsElement.innerHTML = "";
 
-      suggestions.forEach((suggestion) => {
-        let suggestionBtn = document.createElement("button");
-        suggestionBtn.textContent = suggestion;
-        suggestionBtn.addEventListener("click", () => {
-          wordList[wordIndex] = suggestion;
+        if (data !== " " || value[selectionIndex - 2] === " ") {
+          suggestions.forEach((suggestion) => {
+            let suggestionBtn = document.createElement("button");
+            suggestionBtn.textContent = suggestion;
+            suggestionBtn.addEventListener("click", () => {
+              wordList[wordIndex] = suggestion;
+              const finalText = wordList.join(" ");
+              const selectedWordIndex =
+                finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
+              selectSuggestedWord(finalText, selectedWordIndex);
+              suggestionsElement.innerHTML = "";
+            });
+            suggestionsElement.appendChild(suggestionBtn);
+          });
+        }
+
+        if (data === " " && value[selectionIndex] - 2 !== " ") {
+          console.log("Space pressed", suggestedWord);
+          wordList[wordIndex] = suggestedWord;
           const finalText = wordList.join(" ") + " ";
           const selectedWordIndex =
             finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
           selectSuggestedWord(finalText, selectedWordIndex);
           suggestionsElement.innerHTML = "";
-        });
-        suggestionsElement.appendChild(suggestionBtn);
+        }
       });
-
-      if (data == " " && value[selectionIndex] - 2 !== " ") {
-        console.log("Space pressed", suggestedWord);
-        wordList[wordIndex] = suggestedWord;
-        const finalText = wordList.join(" ") + " ";
-        const selectedWordIndex =
-          finalText.indexOf(suggestedWord) + suggestedWord.length + 1;
-        selectSuggestedWord(finalText, selectedWordIndex);
-        suggestionsElement.innerHTML = "";
-      }
-    });
+  }
 });
 
 function selectSuggestedWord(text, index) {
@@ -369,18 +379,22 @@ function selectSuggestedWord(text, index) {
 
 // Special Characters
 
-selectSpecialCharacterBtn.addEventListener("click", () => {
-  selectSpecialCharacter().catch((err) => {
-    console.error(err);
+specialCharButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectSpecialCharacter(button.textContent.trim()).catch((err) => {
+      console.error(err);
+    });
   });
 });
 
-function selectSpecialCharacter() {
-  return new Promise((resolve, reject) => {
-    const selectedOption =
-      specialCharacters.options[specialCharacters.selectedIndex].value;
-    console.log("selected", selectedOption);
+// selectSpecialCharacterBtn.addEventListener("click", () => {
+//   selectSpecialCharacter().catch((err) => {
+//     console.error(err);
+//   });
+// });
 
+function selectSpecialCharacter(selectedOption) {
+  return new Promise((resolve, reject) => {
     const textValue = inputTextField.value;
     const selectionStart = inputTextField.selectionStart;
     const selectionEnd = inputTextField.selectionEnd;

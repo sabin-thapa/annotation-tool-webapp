@@ -138,6 +138,7 @@ textarea:focus {
   text-align: center;
   background-color: #eee;
   font-size: 0.9rem;
+  margin: 0 4px;
 }
 #select-special-character {
   height: 45px;
@@ -420,3 +421,4 @@ button:hover {
     border: none;
   }
 }
+
