@@ -236,10 +236,21 @@ async function saveData(action) {
   }
 }
 
+// Helper function to check equality of strings
+function isSameText(text1, text2) {
+  return text1.trim() === text2.trim();
+}
+
 // Iterate through the images in the folder
 nextBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  if (inputTextField.value !== "" || isInvalid === true) {
+
+  const currentText = inputTextField.value;
+  const previousText = annotations[currentIndex] || "";
+  if (isSameText(currentText, previousText)) {
+    currentIndex = (currentIndex + 1) % fileList.length;
+    showImage(currentIndex);
+  } else if (inputTextField.value !== "" || isInvalid === true) {
     await saveData("next");
   } else {
     currentIndex = (currentIndex + 1) % fileList.length;
@@ -250,15 +261,21 @@ nextBtn.addEventListener("click", async (e) => {
 
 prevBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  if (inputTextField.value !== "" || isInvalid === true) {
-    await saveData("previous");
+  const currentText = inputTextField.value;
+  const previousText = annotations[currentIndex] || "";
+  if (isSameText(currentText, previousText)) {
+    currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
+
+    showImage(currentIndex);
+  } else if (inputTextField.value !== "" || isInvalid === true) {
+    await saveData("next");
   } else {
     currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
+
     inputTextField.value = annotations[currentIndex] || "";
     showImage(currentIndex);
   }
 });
-
 
 function showNextImage() {
   currentIndex = (currentIndex + 1) % fileList.length;
