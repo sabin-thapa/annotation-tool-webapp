@@ -199,21 +199,21 @@ async function saveData(action) {
 
       console.log("Cropped image saved successfully!");
 
-      // Save original image
-      const originalFormData = new FormData();
-      originalFormData.append("imageName", originalImageName);
-      originalFormData.append("imageData", file);
+      // // Save original image
+      // const originalFormData = new FormData();
+      // originalFormData.append("imageName", originalImageName);
+      // originalFormData.append("imageData", file);
 
-      const originalResponse = await fetch(saveOriginalEndpoint, {
-        method: "POST",
-        body: originalFormData,
-      });
+      // const originalResponse = await fetch(saveOriginalEndpoint, {
+      //   method: "POST",
+      //   body: originalFormData,
+      // });
 
-      if (!originalResponse.ok) {
-        throw new Error("Failed to save original image!");
-      }
+      // if (!originalResponse.ok) {
+      //   throw new Error("Failed to save original image!");
+      // }
 
-      console.log("Original image saved successfully!");
+      // console.log("Original image saved successfully!");
 
       if (action === "next") {
         currentIndex = (currentIndex + 1) % fileList.length;
@@ -236,9 +236,31 @@ async function saveData(action) {
   }
 }
 
-// Helper function to check equality of strings
-function isSameText(text1, text2) {
-  return text1.trim() === text2.trim();
+// Save all original images
+async function saveOriginalImages() {
+  try {
+    // Iterate over each file in the fileList
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+      const originalFormData = new FormData();
+      const imageName = file.name;
+      originalFormData.append("imageName", imageName);
+      originalFormData.append("imageData", file);
+
+      const originalResponse = await fetch(saveOriginalEndpoint, {
+        method: "POST",
+        body: originalFormData,
+      });
+
+      if (!originalResponse.ok) {
+        throw new Error("Failed to save original image:", imageName);
+      }
+
+      console.log("Original image saved successfully:", imageName);
+    }
+  } catch (error) {
+    console.error("Error saving original images:", error);
+  }
 }
 
 // Iterate through the images in the folder
@@ -277,6 +299,11 @@ prevBtn.addEventListener("click", async (e) => {
   }
 });
 
+// Helper function to check equality of strings
+function isSameText(text1, text2) {
+  return text1.trim() === text2.trim();
+}
+
 function showNextImage() {
   currentIndex = (currentIndex + 1) % fileList.length;
   inputTextField.value = annotations[currentIndex] || "";
@@ -291,17 +318,15 @@ function showPreviousImage() {
 
 // Download Zip Button
 
-downloadBtn.addEventListener("click", () => {
-  fetch(generateZipEndpoint)
-    .then((res) => {
-      if (res.ok) {
-        return res.blob();
-      } else {
-        throw new Error("Error generating the zip file --client");
-      }
-    })
-    .then((blob) => {
-      //Create a temp link to download the zip
+downloadBtn.addEventListener("click", async () => {
+  try {
+    await saveOriginalImages();
+
+    const zipResponse = await fetch(generateZipEndpoint);
+    if (zipResponse.ok) {
+      const blob = await zipResponse.blob();
+
+      // Create a temporary link to download the zip
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `${folderName}.zip`;
@@ -309,10 +334,12 @@ downloadBtn.addEventListener("click", () => {
       link.click();
 
       URL.revokeObjectURL(link.href);
-    })
-    .catch((err) => {
-      console.error("Error: ", err);
-    });
+    } else {
+      throw new Error("Error generating the zip file --client");
+    }
+  } catch (err) {
+    console.error("Error: ", err);
+  }
 });
 
 // <! -- Annotation Part -- !>
