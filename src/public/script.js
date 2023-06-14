@@ -315,13 +315,39 @@ function showPreviousImage() {
   inputTextField.value = annotations[currentIndex] || "";
   showImage(currentIndex);
 }
+async function saveNonAnnotatedImagesToCSV() {
+  const fileArray = Array.from(fileList);
+  const nonAnnotatedImages = fileArray.filter((file, index) => {
+    return !annotations[currentIndex];
+  });
+
+  nonAnnotatedImages.map(async (file) => {
+    const csvResponse = await fetch(saveCSVEndpoint, {
+      method: "POST",
+      body: JSON.stringify({
+        imageName: file.name,
+        annotatedText: "",
+        isNepali: "",
+        isInvalid: "",
+        folderName,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!csvResponse.ok) {
+      throw new Error("Failed to save CSV file!");
+    }
+  });
+}
 
 // Download Zip Button
 
 downloadBtn.addEventListener("click", async () => {
   try {
     await saveOriginalImages();
-
+    await saveNonAnnotatedImagesToCSV()
     const zipResponse = await fetch(generateZipEndpoint);
     if (zipResponse.ok) {
       const blob = await zipResponse.blob();
