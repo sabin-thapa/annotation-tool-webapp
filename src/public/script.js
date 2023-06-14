@@ -45,6 +45,9 @@ let folderPath = "";
 let folderName = "";
 let fileName = "";
 
+//Annotations
+let annotations = {};
+
 let suggestions = [];
 let suggestedWord = "";
 let nepaliMode = false;
@@ -109,6 +112,14 @@ function showImage(index) {
     });
     reader.readAsDataURL(file);
 
+    //Retrieve the annotated text for the currrent image
+    const savedAnnotation = annotations[currentIndex];
+    if (savedAnnotation) {
+      inputTextField.value = savedAnnotation;
+    } else {
+      inputTextField.value = "";
+    }
+
     //Get the folder name of the folder containing images
     folderPath = file.webkitRelativePath;
     folderName = folderPath.substring(0, folderPath.lastIndexOf("/"));
@@ -129,7 +140,7 @@ function showImage(index) {
   }
 }
 
-async function saveData() {
+async function saveData(action) {
   try {
     const file = fileList[currentIndex];
     console.log(currentIndex, "curr index save data");
@@ -203,16 +214,21 @@ async function saveData() {
       }
 
       console.log("Original image saved successfully!");
-      //Show next image or previoes when saved
 
-      if (e.target.id === "nextBtn") {
-        showNextImage();
-      } else {
-        showPreviousImage();
+      if (action === "next") {
+        currentIndex = (currentIndex + 1) % fileList.length;
+      } else if (action === "previous") {
+        currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
       }
+
+      inputTextField.value = annotations[currentIndex] || "";
+      showImage(currentIndex);
     };
 
     reader.readAsDataURL(file);
+
+    // Save the annotated text to the data structure
+    annotations[currentIndex] = inputTextField.value;
 
     console.log("Saved");
   } catch (error) {
@@ -223,32 +239,36 @@ async function saveData() {
 // Iterate through the images in the folder
 nextBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  console.log(isInvalid, "is invalid");
   if (inputTextField.value !== "" || isInvalid === true) {
-    await saveData();
+    await saveData("next");
   } else {
-    showNextImage();
+    currentIndex = (currentIndex + 1) % fileList.length;
+    inputTextField.value = annotations[currentIndex] || "";
+    showImage(currentIndex);
   }
 });
 
 prevBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   if (inputTextField.value !== "" || isInvalid === true) {
-    await saveData();
+    await saveData("previous");
   } else {
-    showPreviousImage();
+    currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
+    inputTextField.value = annotations[currentIndex] || "";
+    showImage(currentIndex);
   }
 });
 
+
 function showNextImage() {
   currentIndex = (currentIndex + 1) % fileList.length;
-  inputTextField.value = "";
+  inputTextField.value = annotations[currentIndex] || "";
   showImage(currentIndex);
 }
 
 function showPreviousImage() {
   currentIndex = (currentIndex - 1 + fileList.length) % fileList.length;
-  inputTextField.value = "";
+  inputTextField.value = annotations[currentIndex] || "";
   showImage(currentIndex);
 }
 
@@ -291,10 +311,10 @@ function toggleNepaliMode(isNepaliMode) {
   console.log(nepaliMode, "Nepali Mode");
   if (nepaliMode) {
     specialCharSelectionDiv.classList.remove("hide");
-    specialCharButtons.classList.remove("hide")
+    specialCharButtons.classList.remove("hide");
   } else {
     specialCharSelectionDiv.classList.add("hide");
-    specialCharButtons.classList.add("hide")
+    specialCharButtons.classList.add("hide");
   }
 }
 inputTextField.addEventListener("keyup", async (e) => {
