@@ -104,7 +104,7 @@ app.post("/:folderPath*/save-csv", (req, res) => {
   // Create CSV content - Headers and Data
   // const csvRow = `Image Name,Annotated Text,Is Nepali\n"${imageName}","${annotatedText}","${isNepali}"`;
   const csvRow = `${
-    csvExists ? "" : "Image,Text,Is Nepali, Invalid\n"
+    csvExists ? "" : "Image Name,Annotated Text,Is Nepali?, Invalid?\n"
   }"${imageName}","${annotatedText}","${isNepali}", "${isInvalid}"\n`;
 
   // Append content to the CSV file
